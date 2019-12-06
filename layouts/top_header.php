@@ -23,7 +23,7 @@
 								Chao: <?php echo $_SESSION['login']['name'] ?>
 							</a>
 							<div class="dropdown-menu">
-								<a class="dropdown-item" href="#">
+								<a class="dropdown-item" href="<?php echo Base_url ?>admin">
 									Quan Li
 
 								</a>

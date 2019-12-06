@@ -9,6 +9,7 @@
  	$Get_categories = executeQuery($sql,true);
  	//lấy mã sản phẩm
  	$id=$_GET['id'];
+ 	
  	//Hiện thị ảnh sản phẩm
  	$sql="SELECT * FROM product_gallreries where product_id = $id";
  	$product_gallreries = executeQuery($sql,true);
@@ -18,13 +19,16 @@
  	//Hiện thị bình luận của sản phẩm
  	$sql ="SELECT *,DATE_FORMAT(comments.created_at,'%d/%m/%Y') AS n
    						FROM comments join users ON comments.user_id=users.id
-   						where product_id =$id";
+   						where product_id =$id ORDER by comments.created_at DESC";
 
    	$ShowCMT=executeQuery($sql,true);
    	//Hiện thị chi tiết sản phẩm
  	$sql="SELECT * FROM products join categories on
  						 products.cate_id=categories.id where products.id = $id";
  	$detail_product = executeQuery($sql,false);
+ 	if ($id==null || $detail_product==null) {
+ 		header('location:'.Base_url);
+ 	}
  	$id_cate=$detail_product['cate_id'];
  	//Các sản phẩm liên quan
  	$sql="SELECT *,products.id AS pro_id FROM products join categories on
@@ -194,12 +198,15 @@
 										<img src="<?php echo Base_url.$detail_product['image'] ?>" data-imagezoom="true" class="img-fluid" alt="">
 									</div>
 								</li>
+								<?php if($product_gallreries==""): ?>
+								<?php else: ?>
 								<?php foreach($product_gallreries as $pro_gallreries): ?>
 								<li data-thumb="<?php echo Base_url.$pro_gallreries['image_url']; ?>">
 									<div class="thumb-image">
 										<img src="<?php echo Base_url.$pro_gallreries['image_url']; ?>" data-imagezoom="true" class="img-fluid" alt=""> </div>
 								</li>
 								<?php endforeach ?>
+								<?php endif; ?>
 							</ul>
 							<div class="clearfix"></div>
 						</div>
@@ -225,7 +232,7 @@
 					<p>Trạng Thái: 
 						<?php foreach($status_products as $key => $value): ?>
 							<?php if($detail_product['status']==$value): ?>
-								
+								<span class="text-primary">
 									<?php echo $key; ?>	
 								</span>
 							
@@ -331,42 +338,7 @@
 				<?php endif; ?>
 				)
 			</h5>
-			<div id="load_cmt" style="margin-top: 40px;" class="container">
-				<?php 
-              
-
-               if(isset($_POST['btn_submit'])){
-                  $test='/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)$/';
-                  $product_id=$_POST['pr_id'];
-
-                  
-                  $content = $_POST['content'];
-                  if(!isset($_SESSION['login']) || $_SESSION['login']==null) {
-                     $err="Bạn cần đăng nhập để bình luận";
-                     
-                  }
-                  
-                 elseif ($content=="") {
-                      $err="Nội dung không được để trống";
-                 } 
-                  
-             	else{
-             
-                  $name=$_SESSION['login']['name'];
-                  $email=$_SESSION['login']['email'];
-                  $user_id=$_SESSION['login']['id'];
-                  $sql= "insert into comments
-                           (content,product_id,user_id)
-                        values
-                           ('$content',$product_id,$user_id)";
-                           var_dump($sql);
-                   executeQuery($sql,true);
-                  
-                  header('location'.Base_url.'detail.php?id='.$detail_product['id']);
-                 }
-                 
-               }
-            ?>
+			<div id="load_cmt" style="margin-top: 40px;" class="container">	
             <p style="color:red;"> <?php if(isset($err)) echo $err; ?> </p>
             	<?php if($detail_product['disabled_comment']<0): ?>
             	<div class="container text-center">
@@ -378,17 +350,24 @@
             	
             	<?php elseif($detail_product['disabled_comment']==0): ?>
             	<div class="container mt-4">
-	            	<form action="" method="post">
+            		<?php if(isset($_GET['err'])): ?>
+            			<span class="text-danger">
+            				<?php echo $_GET['err'] ?>
+            			</span>
+            		<?php endif; ?>	
+	            	<form action="<?php echo Base_url.'submit_cmt.php' ?>" method="post">
 	                <input type="hidden" name="pr_id" 
 	                  value="<?php echo $id;?>">
 	                <input style="height: 120px;font-size: 17px;" class="form-control col-lg-8" type="text" name="content" placeholder="Nhập nội dung để bình luận">
 	                <br>
 	                <input class="container col-lg-2 btn btn-primary" name="btn_submit" type="submit" value="Gửi">
 	            	</form>
+	            	
 	            </div>
-	            <?php elseif($ShowCMT==''): ?>
-	            <?php else: ?>            
-            	 <?php foreach($ShowCMT as $cmt): ?>
+	            <?php endif; ?> 
+	            <?php if($ShowCMT=='' || $ShowCMT==null): ?>
+	            <?php else: ?>        
+        	 	<?php foreach($ShowCMT as $cmt): ?>
 	             <div style="margin-top:20px;background: #f8f8f8;" class="border col-lg-8">
 	               <img style="float: left;border-radius:100%;width: 80px;height: 80px;" src="<?php echo Base_url.$cmt['avatar'] ?>">
 	               <div>
@@ -397,7 +376,7 @@
 	               <p style="padding: 5px 10px;"><?php echo "Ngày Bình Luận: ".$cmt['n'] ?></p>
 	               </div>
 	             </div>
-	          	<?php endforeach ?>
+          		<?php endforeach ?>
 	         	<?php endif; ?>      
          	</div>	
 		</div>

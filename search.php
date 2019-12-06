@@ -132,8 +132,10 @@
 						<!-- first section -->
 						<div class="product-sec1 px-sm-4 px-3 py-sm-5  py-3 mb-4">
 							<?php if(isset($sanpham) =='' || $sanpham == false): ?>
-								<h3 class="heading-tittle text-center font-italic">
-								Không tìm thấy kết quả nào phù hợp</h3>
+							<h3 class="heading-tittle text-center font-italic">
+							Không tìm thấy kết quả nào phù hợp
+							</h3>
+						</div>
 							<?php else: ?>
 							<h3 class="heading-tittle text-center font-italic">
 								Kết Quả Tìm Kiếm Cho: <?php echo $search; ?></h3>

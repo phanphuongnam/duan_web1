@@ -33,8 +33,9 @@
 		return $result[0];
 	}
 	$status_products=[
-		'<span class="text-primary">Còn Hàng</span>' => 1,
-		'<span class="text-danger">Hết Hàng</span>' => 0
+		'Tạm Ngưng' => 2,
+		'Còn Hàng' => 1,
+		'Hết Hàng' => 0
 
 	];
 	$payment_method = [
@@ -42,5 +43,10 @@
 		'Visa/Master Card' => 2,
 		'COD' => 3
 
-	]
+	];
+	$disabled_cmt = [
+		'Đóng' => -1,
+		'Mở' => 0
+
+	];
 ?>

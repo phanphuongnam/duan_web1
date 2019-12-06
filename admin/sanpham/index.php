@@ -6,7 +6,7 @@
   }
   $sql = "select
           *,
-          categories.cate_name as cate_name,amount*price as total_price
+          categories.cate_name as cate_name,products.id as pros_id,amount*price as total_price
           from products
           join categories
             on products.cate_id = categories.id
@@ -140,16 +140,18 @@
 
     <!-- Main content -->
     <section class="content container-fluid">
-      <table class="table text-center">
+      <table style="font-family: time new roman" class="table text-center">
         <thead>
           <tr>
               <th scope="col">Tên Sản Phẩm</th>    
               <th scope="col">Ảnh</th>
               <th scope="col">Danh Mục</th>
+              <th scope="col">Trạng Thái Bình Luận</th>
+              <th scope="col">Lượt Xem</th>
               <th scope="col">Số Lượng</th>
               <th scope="col">Giá</th>
               <th scope="col">
-                <a href="themsp.php">
+                <a href="them.php">
                   <button style="width:100%;max-width:100px;" class="btn btn-success btn-sm" type="submit"><i style="font-size: 14px;" class="fa fa-plus-circle " aria-hidden="true"></i>
                     Thêm</button>
                 </a>
@@ -175,15 +177,26 @@
               <?php echo $p['cate_name'] ?>
                <?php endif ?> 
             </td>
+            <td>
+              <?php foreach($disabled_cmt as $key => $value): ?>
+                  <?php if($p['disabled_comment'] == $value): ?>
+                      <?php echo $key; ?>
+                  <?php endif; ?>
+
+
+              <?php endforeach; ?>
+                
+            </td>
+            <td><?php echo $p['views'] ?></td>
             <td><?php echo $p['amount'] ?></td>
             <td><?php echo $p['price'] ?> VND</td>
             <td class="col-lg-2">
-              <a href="suasp.php?id=<?php echo $p['id'] ?>">
+              <a href="sua.php?id=<?php echo $p['pros_id'] ?>">
                   <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                    Sửa</button> 
                 </a>
                 <a onclick="return confirm('Bạn có muốn xóa sản phẩm <?php echo $p['name'] ?> không?')" 
-                  href="xoasp.php?id=<?php echo $p['id'] ?>" class="nam123">
+                  href="xoasp.php?id=<?php echo $p['pros_id'] ?>" class="nam123">
                   <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash"></i> Xóa </button>
                 </a>
               

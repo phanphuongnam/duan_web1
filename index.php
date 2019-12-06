@@ -65,7 +65,6 @@
 							</a>
 							<div class="dropdown-menu">
 								<div class="agile_inner_drop_nav_info p-4">
-									
 									<div class="row">
 										<?php foreach($Get_categories as $get_cate): ?>
 										<div class="col-sm-6 multi-gd-img">
@@ -77,7 +76,6 @@
 												</li>	
 											</ul>
 										</div>
-										
 									  <?php endforeach ?>
 									</div>
 								</div>

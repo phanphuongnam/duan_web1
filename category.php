@@ -60,9 +60,8 @@
 							</a>
 							<div class="dropdown-menu">
 								<div class="agile_inner_drop_nav_info p-4">
-									
 									<div class="row">
-										<?php foreach($Get_categories as $get_cate): ?>
+									<?php foreach($Get_categories as $get_cate): ?>
 										<div class="col-sm-6 multi-gd-img">
 											<ul class="multi-column-dropdown">
 												<li>
@@ -72,13 +71,11 @@
 												</li>	
 											</ul>
 										</div>
-										
-									  <?php endforeach ?>
+									 <?php endforeach ?>
 									</div>
 								</div>
 							</div>
 						</li>
-						
 						<li class="nav-item mr-lg-2 mb-lg-0 mb-2">
 							<a class="nav-link" href="<?php echo Base_url ?>shop.php">San Pham</a>
 						</li>
