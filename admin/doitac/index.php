@@ -143,7 +143,7 @@
               <th scope="col">Hình Ảnh</th>
               <th scope="col">Link</th>
               <th scope="col">
-                <a href="themsp.php">
+                <a href="them.php">
                   <button style="width:100%;max-width:100px;" class="btn btn-success btn-sm" type="submit"><i style="font-size: 14px;" class="fa fa-plus-circle " aria-hidden="true"></i>
                     Thêm</button>
                 </a>
@@ -162,15 +162,15 @@
             </td>
             <td><?php echo $brs['url'] ?></td>
             <td class="col-lg-2">
-              <a href="suasp.php?id=<?php echo $brs['id'] ?>">
+              <a href="sua.php?id=<?php echo $brs['id'] ?>">
                   <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                    Sửa</button> 
-                </a>
-                <a 
-                  onclick="return confirm('Bạn có muốn xóa danh mục <?php echo $brs['cate_name'] ?> không?')" 
-                  href="xoasp.php?id=<?php echo $brs['id'] ?>">
-                  <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash"></i> Xóa </button>
-                </a>
+              </a>
+              <a 
+                onclick="return confirm('Bạn có muốn xóa thương hiệu <?php echo $brs['name'] ?> không?')" 
+                href="xoa.php?id=<?php echo $brs['id'] ?>">
+                <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash"></i> Xóa </button>
+              </a>
               
           </td>
           </tr>

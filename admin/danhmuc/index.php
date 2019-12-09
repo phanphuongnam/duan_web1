@@ -141,7 +141,7 @@
               <th scope="col">Số Lượng</th>
               <th scope="col">Mô Tả</th>
               <th scope="col">
-                <a href="themsp.php">
+                <a href="them.php">
                   <button style="width:100%;max-width:100px;" class="btn btn-success btn-sm" type="submit"><i style="font-size: 14px;" class="fa fa-plus-circle " aria-hidden="true"></i>
                     Thêm</button>
                 </a>
@@ -154,15 +154,15 @@
           <tr>
             <td><?php echo $cates['cate_name'] ?></td>
             <td><?php echo $cates['totalpros'] ?></td>
-            <td><?php echo $cates['desc'] ?></td>
+            <td><?php echo $cates['description'] ?></td>
             <td class="col-lg-2">
-              <a href="suasp.php?id=<?php echo $cates['id'] ?>">
+              <a href="sua.php?id=<?php echo $cates['id'] ?>">
                   <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                    Sửa</button> 
                 </a>
                 <a 
                   onclick="return confirm('Bạn có muốn xóa danh mục <?php echo $cates['cate_name'] ?> không?')" 
-                  href="xoasp.php?id=<?php echo $cates['id'] ?>">
+                  href="xoa.php?id=<?php echo $cates['id'] ?>">
                   <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash"></i> Xóa </button>
                 </a>
               

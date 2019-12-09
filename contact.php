@@ -6,6 +6,36 @@ session_start();
  	//thông tin website
  	$sql='select * from settings_web';
  	$info_web = executeQuery($sql,false);
+ 	//lấy ra tất cả danh mục
+ 	$sql = "SELECT * FROM categories";
+ 	$Get_categories = executeQuery($sql,true);
+ 	if (isset($_POST['submit'])) {
+ 		$test='/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)$/';
+ 		$fullname = $_POST['Name'];
+ 		$email = $_POST['Email'];
+ 		$content = $_POST['content'];
+ 		if($content==''){
+ 			$errContent ="Bạn chưa nhập nội dung";
+ 		}
+ 		if($fullname==''){
+ 			$errFullname ="Bạn chưa nhập họ tên";
+ 		}
+ 		if($email==''){
+ 			$errEmail ="Bạn chưa nhập email";
+ 		}
+ 		elseif (!preg_match($test,$email)) {
+          $errEmail="Email không hợp lệ, vui lòng nhập lại";
+          
+          
+        }
+ 		else{
+ 			$insert_contact = "INSERT INTO contacts(fullname,content,email)
+             VALUES ('$fullname','$content','$email')";
+            executeQuery($insert_contact);
+            $sucsess= 'Cảm ơn bạn đã liên hệ với chúng tôi!';
+
+ 		}
+ 	}
 ?>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -51,30 +81,18 @@ session_start();
 							</a>
 							<div class="dropdown-menu">
 								<div class="agile_inner_drop_nav_info p-4">
-									<h5 class="mb-3">Mobiles, Computers</h5>
 									<div class="row">
+										<?php foreach($Get_categories as $get_cate): ?>
 										<div class="col-sm-6 multi-gd-img">
 											<ul class="multi-column-dropdown">
 												<li>
-													<a href="product.html">All Mobile Phones</a>
-												</li>
-												<li>
-													<a href="product.html">All Mobile Accessories</a>
-												</li>
-												
+													<a 
+													href="<?php echo Base_url.'category.php?id='
+													.$get_cate['id'] ?>"><?php echo $get_cate['cate_name'] ?></a>
+												</li>	
 											</ul>
 										</div>
-										<div class="col-sm-6 multi-gd-img">
-											<ul class="multi-column-dropdown">
-												<li>
-													<a href="product.html">Laptops</a>
-												</li>
-												<li>
-													<a href="product.html">Drives & Storage</a>
-												</li>
-												
-											</ul>
-										</div>
+									  <?php endforeach ?>
 									</div>
 								</div>
 							</div>
@@ -84,7 +102,7 @@ session_start();
 							<a class="nav-link" href="<?php echo Base_url ?>shop.php">San Pham</a>
 						</li>
 						<li class="nav-item mr-lg-2 mb-lg-0 mb-2">
-							<a class="nav-link" href="about.html">Gioi thieu</a>
+							<a class="nav-link" href="<?php echo Base_url ?>about.php">Gioi thieu</a>
 						</li>
 					<!-- 	<li class="nav-item dropdown mr-lg-2 mb-lg-0 mb-2">
 							<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -137,8 +155,8 @@ session_start();
 		<div class="container py-xl-4 py-lg-2">
 			<!-- tittle heading -->
 			<h3 class="tittle-w3l text-center mb-lg-5 mb-sm-4 mb-3">
-				<span>C</span>ontact
-				<span>U</span>s
+				<span>L</span>iên
+				<span>H</span>ệ với chúng tôi
 			</h3>
 			<!-- //tittle heading -->
 			<div class="row contact-grids agile-1 mb-5">
@@ -147,9 +165,8 @@ session_start();
 						<div class="con-ic">
 							<i class="fas fa-map-marker-alt rounded-circle"></i>
 						</div>
-						<h4 class="font-weight-bold mt-sm-4 mt-3 mb-3">Address</h4>
-						<p>1PO Box 8568954 Melbourne
-							<label>Australia.</label>
+						<h4 class="font-weight-bold mt-sm-4 mt-3 mb-3">Địa chỉ</h4>
+						<p><?php echo $info_web['address'] ?>
 						</p>
 					</div>
 				</div>
@@ -158,9 +175,8 @@ session_start();
 						<div class="con-ic">
 							<i class="fas fa-phone rounded-circle"></i>
 						</div>
-						<h4 class="font-weight-bold mt-sm-4 mt-3 mb-3">Call Us</h4>
-						<p>+(0121) 121 121
-							<label>+(0121) 121 122</label>
+						<h4 class="font-weight-bold mt-sm-4 mt-3 mb-3">Liên Lạc</h4>
+						<p><?php echo $info_web['hotline'] ?>
 						</p>
 					</div>
 				</div>
@@ -171,33 +187,34 @@ session_start();
 						</div>
 						<h4 class="font-weight-bold mt-sm-4 mt-3 mb-3">Email</h4>
 						<p>
-							<a href="mailto:info@example.com">info@example1.com</a>
-							<label>
-								<a href="mailto:info@example.com">info@example2.com</a>
-							</label>
+							<a href="mailto:<?php echo $info_web['email'] ?>"><?php echo $info_web['email'] ?></a>
 						</p>
 					</div>
 				</div>
 			</div>
 			<!-- form -->
-			<form action="#" method="post">
+			<form action="" method="post">
 				<div class="contact-grids1 w3agile-6">
+					<p class="text-primary"><?php if(isset($sucsess)) echo $sucsess; ?></p>
 					<div class="row">
 						<div class="col-md-6 col-sm-6 contact-form1 form-group">
-							<label class="col-form-label">Name</label>
-							<input type="text" class="form-control" name="Name" placeholder="" required="">
+							<label class="col-form-label">Họ Tên</label>
+							<input type="text" class="form-control" name="Name" placeholder="Nhập Họ Tên">
+							<p class="text-danger"><?php if(isset($errFullname)) echo $errFullname; ?></p>
 						</div>
 						<div class="col-md-6 col-sm-6 contact-form1 form-group">
-							<label class="col-form-label">E-mail</label>
-							<input type="email" class="form-control" name="Email" placeholder="" required="">
+							<label class="col-form-label">Email</label>
+							<input type="text" class="form-control" name="Email" placeholder="Nhập Email">
+							<p class="text-danger"><?php if(isset($errEmail)) echo $errEmail; ?></p>
 						</div>
 					</div>
 					<div class="contact-me animated wow slideInUp form-group">
-						<label class="col-form-label">Message</label>
-						<textarea name="Message" class="form-control" placeholder="" required=""> </textarea>
+						<label class="col-form-label">Nội dung</label>
+						<textarea name="content" class="form-control"></textarea>
+						<p class="text-danger"><?php if(isset($errContent)) echo $errContent; ?></p>
 					</div>
 					<div class="contact-form">
-						<input type="submit" value="Submit">
+						<input type="submit" name="submit" value="Gửi Phản Hồi">
 					</div>
 				</div>
 			</form>
@@ -208,8 +225,7 @@ session_start();
 
 	<!-- map -->
 	<div class="map mt-sm-0 mt-4">
-		<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d805196.5077734194!2d144.49270863101745!3d-37.97015423820711!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad646b5d2ba4df7%3A0x4045675218ccd90!2sMelbourne+VIC%2C+Australia!5e0!3m2!1sen!2sin!4v1474020956974"
-		    allowfullscreen></iframe>
+		<iframe src="<?php echo $info_web['map']; ?>"></iframe>
 	</div>
 	<!-- //map -->
 

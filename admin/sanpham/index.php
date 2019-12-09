@@ -167,7 +167,7 @@
                src="<?php echo Base_url.$p['image'] ?>">
                <br>
 
-               <a href="#">Album Ảnh</a>
+               <a href="<?php echo Base_url.'admin/galleries/?product-album='.$p['pros_id']; ?>">Album Ảnh</a>
             </td>
 
             <td>

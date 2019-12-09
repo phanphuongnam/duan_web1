@@ -5,7 +5,9 @@ session_start();
  	//thông tin website
  	$sql='select * from settings_web';
  	$info_web = executeQuery($sql,false);
- 	
+ 	//lấy ra tất cả danh mục
+ 	$sql = "SELECT * FROM categories";
+ 	$Get_categories = executeQuery($sql,true);
 ?>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -51,30 +53,18 @@ session_start();
 							</a>
 							<div class="dropdown-menu">
 								<div class="agile_inner_drop_nav_info p-4">
-									<h5 class="mb-3">Mobiles, Computers</h5>
 									<div class="row">
+										<?php foreach($Get_categories as $get_cate): ?>
 										<div class="col-sm-6 multi-gd-img">
 											<ul class="multi-column-dropdown">
 												<li>
-													<a href="product.html">All Mobile Phones</a>
-												</li>
-												<li>
-													<a href="product.html">All Mobile Accessories</a>
-												</li>
-												
+													<a 
+													href="<?php echo Base_url.'category.php?id='
+													.$get_cate['id'] ?>"><?php echo $get_cate['cate_name'] ?></a>
+												</li>	
 											</ul>
 										</div>
-										<div class="col-sm-6 multi-gd-img">
-											<ul class="multi-column-dropdown">
-												<li>
-													<a href="product.html">Laptops</a>
-												</li>
-												<li>
-													<a href="product.html">Drives & Storage</a>
-												</li>
-												
-											</ul>
-										</div>
+									  <?php endforeach ?>
 									</div>
 								</div>
 							</div>

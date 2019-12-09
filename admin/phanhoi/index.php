@@ -1,7 +1,11 @@
 <?php 
-
+  session_start();
 	require_once '../../commons/db.php';
-	
+  if (!isset($_SESSION['login']) || $_SESSION['login']=='') {
+    header('location:'.Base_url);
+  }
+	$sql="select *,DATE_FORMAT(contacts.created_at,'%d/%m/%Y') AS day_ct from contacts";
+  $show_contact = executeQuery($sql,true);
 
 
 
@@ -28,10 +32,10 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+          <img src="<?php echo Base_url.$_SESSION['login']['avatar']; ?>" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Alexander Pierce</p>
+          <p><?php echo $_SESSION['login']['name']; ?></p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
@@ -51,38 +55,64 @@
         <li class="header">MAIN NAVIGATION</li>
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-share"></i> <span>Multilevel</span>
+            <i class="fa fa-cogs" aria-hidden="true"></i><span>Cấu Hình Hệ Thống</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
-            <li class="treeview">
-              <a href="#"><i class="fa fa-circle-o"></i> Level One
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="#"><i class="fa fa-circle-o"></i> Level Two</a></li>
-                <li class="treeview">
-                  <a href="#"><i class="fa fa-circle-o"></i> Level Two
-                    <span class="pull-right-container">
-                      <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                  </a>
-                  <ul class="treeview-menu">
-                    <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
-                    <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
+            <li><a href="<?php echo Base_url.'admin'; ?>"><i class="fa fa-bar-chart" aria-hidden="true"></i></i> Thống kê</a></li>
+            
+            <li><a href="<?php echo Base_url.'admin/info'; ?>"><i class="fa fa-info" aria-hidden="true"></i>Thông tin website</a></li>
+            <li><a href="<?php echo Base_url.'admin/slider'; ?>"><i class="fa fa-sliders" aria-hidden="true"></i>Slide</a></li>
+            <li class=""><a href="<?php echo Base_url.'admin/doitac'; ?>"><i class="fa fa-bandcamp" aria-hidden="true"></i> Đối Tác</a></li>
+
+            <li class="active"><a href="<?php echo Base_url.'admin/phanhoi'; ?>"><i class="fa fa-reply" aria-hidden="true"></i>Phản Hồi</a></li>
           </ul>
         </li>
-        
+
+        <li class="">
+          <a href="<?php echo Base_url ?>admin/sanpham">
+            <i class="fa fa-product-hunt" aria-hidden="true"></i>
+            <span>Sản Phẩm</span>
+          </a>
+        </li>
+        <li>
+          <a href="<?php echo Base_url ?>admin/danhmuc">
+            <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+            <span>Danh Mục</span>
+          </a>
+        </li>
+        <li>
+          <a href="<?php echo Base_url ?>admin/hoadon">
+            <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+            <span>Đơn Hàng</span>
+          </a>
+        </li>
+        <li>
+          <a href="<?php echo Base_url ?>admin/hoadonchitiet">
+            <i class="fa fa-book"></i><span>Đơn Hàng Chi Tiết</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="<?php echo Base_url ?>admin/binhluan">
+            <i class="fa fa-comment-o" aria-hidden="true"></i>
+            <span>Bình Luận</span>
+          </a>
+        </li>
+        <li>
+          <a href="<?php echo Base_url ?>admin/vouchers">
+            <i class="fa fa-archive" aria-hidden="true"></i>
+            <span>Mã Giảm Giá</span>
+          </a>
+        </li>
+         <li>
+          <a href="<?php echo Base_url ?>admin/users">
+            <i class="fa fa-users" aria-hidden="true"></i>
+            <span>Users</span>
+          </a>
+        </li>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -93,21 +123,60 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Dashboard
-        <small>Control panel</small>
+        Phải Hồi
+        <small></small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Dashboard</li>
+        <li class="active">Phải Hồi</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content container-fluid">
 
+      <table style="font-family: time new roman" class="table text-center">
+        <thead>
+          <tr>
+              
+               
+              <th scope="col">Họ Tên</th>
+              <th scope="col">Email</th> 
+              <th scope="col">Nội Dung</th>
+              <th scope="col">Ngày Phản Hồi</th>
+              <th scope="col">Tùy Chọn</th>
+              
+          </tr>
+   
+      </thead>
+      <?php foreach($show_contact as $show_ct) : ?>
+        <tbody>
+          <tr>
+            <td><?php echo $show_ct['fullname'] ?></td>
+            <td><?php echo $show_ct['email'] ?></td>
+            <td><?php echo $show_ct['content'] ?></td>
+            <td><?php echo $show_ct['day_ct'] ?></td>
+            <td class="col-lg-2">
+                <a href="traloi.php?id=<?php echo $show_ct['id'] ?>">
+                  <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-reply"></i> Trả Lời </button>
+                </a> 
+                <a 
+                  onclick="return confirm('Bạn có muốn xóa phải hồi này không?')" 
+                  href="xoa.php?id=<?php echo $show_ct['id'] ?>">
+                  <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash"></i> Xóa </button>
+                </a>
+              
+          </td>
+          </tr>
+        </tbody>
+
+        <?php endforeach ?>
+  
       <!--------------------------
         | Your Page Content Here |
         -------------------------->
+        </table>
+
 
     </section>
        

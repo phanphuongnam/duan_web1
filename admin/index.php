@@ -4,6 +4,17 @@
   if (!isset($_SESSION['login']) || $_SESSION['login']=='') {
     header('location:'.Base_url);
   }
+  $sql= "select count(*) as totalPros from products";
+  $totalPros=executeQuery($sql);
+  $sql= "select count(*) as totalCates from categories";
+  $totalCates=executeQuery($sql);
+  $sql= "select count(*) as totalcmts from comments";
+  $totalcmts=executeQuery($sql);
+  $sql= "select count(*) as totalbrs from brands";
+  $totalbrs=executeQuery($sql);
+  $sql= "select count(*) as totalContacts from contacts";
+  $totalContacts=executeQuery($sql);
+
 	
 
 
@@ -43,7 +54,7 @@
         <div class="input-group">
           <input type="text" name="q" class="form-control" placeholder="Search...">
           <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                <button type="button" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
                 </button>
               </span>
         </div>
@@ -62,11 +73,11 @@
           <ul class="treeview-menu">
             <li><a href="<?php echo Base_url.'admin'; ?>"><i class="fa fa-bar-chart" aria-hidden="true"></i></i> Thống kê</a></li>
             
-            <li><a href="#"><i class="fa fa-info" aria-hidden="true"></i>Thông tin website</a></li>
-            <li><a href="#"><i class="fa fa-sliders" aria-hidden="true"></i>Slide</a></li>
-            <li><a href="#"><i class="fa fa-bandcamp" aria-hidden="true"></i> Đối Tác</a></li>
+            <li><a href="<?php echo Base_url ?>admin/info"><i class="fa fa-info" aria-hidden="true"></i>Thông tin website</a></li>
+            <li><a href="<?php echo Base_url ?>admin/slider"><i class="fa fa-sliders" aria-hidden="true"></i>Slide</a></li>
+            <li><a href="<?php echo Base_url ?>admin/doitac"><i class="fa fa-bandcamp" aria-hidden="true"></i> Đối Tác</a></li>
 
-            <li><a href="#"><i class="fa fa-reply" aria-hidden="true"></i>Phản Hồi</a></li>
+            <li><a href="<?php echo Base_url ?>admin/phanhoi"><i class="fa fa-reply" aria-hidden="true"></i>Phản Hồi</a></li>
           </ul>
         </li>
 
@@ -143,14 +154,14 @@
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner">
-              <h3>150</h3>
+              <h3><?php echo $totalPros['totalPros']; ?></h3>
 
-              <p>New Orders</p>
+              <p>Sản Phẩm</p>
             </div>
             <div class="icon">
               <i class="ion ion-bag"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="<?php echo Base_url ?>admin/sanpham" class="small-box-footer">Xem Chi Tiết <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -158,14 +169,14 @@
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              <h3>53<sup style="font-size: 20px">%</sup></h3>
+              <h3><?php echo $totalCates['totalCates']; ?></h3>
 
-              <p>Bounce Rate</p>
+              <p>Danh Mục</p>
             </div>
             <div class="icon">
               <i class="ion ion-stats-bars"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="<?php echo Base_url ?>admin/danhmuc" class="small-box-footer">Xem Chi Tiết <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -173,14 +184,14 @@
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3>44</h3>
+              <h3><?php echo $totalcmts['totalcmts'] ?></h3>
 
-              <p>User Registrations</p>
+              <p>Bình Luận</p>
             </div>
             <div class="icon">
               <i class="ion ion-person-add"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="<?php echo Base_url ?>admin/binhluan" class="small-box-footer">Xem Chi Tiết <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -188,14 +199,56 @@
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3>65</h3>
+              <h3><?php echo $totalbrs['totalbrs'] ?></h3>
 
-              <p>Unique Visitors</p>
+              <p>Đối Tác</p>
             </div>
             <div class="icon">
               <i class="ion ion-pie-graph"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="<?php echo Base_url ?>admin/doitac" class="small-box-footer">Xem Chi Tiết <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-green">
+            <div class="inner">
+              <h3><?php echo $totalContacts['totalContacts'] ?></h3>
+
+              <p>Phản Hồi</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-pie-graph"></i>
+            </div>
+            <a href="<?php echo Base_url ?>admin/phanhoi" class="small-box-footer">Xem Chi Tiết <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+          <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-yellow">
+            <div class="inner">
+              <h3>65</h3>
+
+              <p>Đơn Hàng</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-pie-graph"></i>
+            </div>
+            <a href="#" class="small-box-footer">Xem Chi Tiết <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+          <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-red">
+            <div class="inner">
+              <h3>65</h3>
+
+              <p>Users</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-pie-graph"></i>
+            </div>
+            <a href="#" class="small-box-footer">Xem Chi Tiết <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->

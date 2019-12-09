@@ -1,6 +1,7 @@
 <?php
 	session_start();
  	require_once 'commons/db.php';
+ 	
  	//thông tin website
  	$sql='select * from settings_web';
  	$info_web = executeQuery($sql,false);

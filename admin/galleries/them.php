@@ -4,56 +4,16 @@
   if (!isset($_SESSION['login']) || $_SESSION['login']=='') {
     header('location:'.Base_url);
   }
-  $sql = "select * from categories";
-  $categories=executeQuery($sql,true);
+  $id=$_GET['id'];
 	
   if(isset($_POST['submit'])){
     $url='C:/xampp/htdocs/duan_web1/public/images/';
     $filename = $_FILES['fileToUpload']['name'];
     $tmp_name = $_FILES['fileToUpload']['tmp_name'];
     $file_size = $_FILES['fileToUpload']['size'];
-    $file_type = $_FILES['fileToUpload']['type'];
-    $product_name =$_POST['name'];
-    $product_amount =$_POST['amount'];
-    $product_price =$_POST['price'];
-    $category=$_POST['categories'];
-    $commentStatus=$_POST['comments'];
-    $desc_short = $_POST['motangan'];
-    $desc_detail = $_POST['mota'];
     $imageFileType = pathinfo($filename,PATHINFO_EXTENSION);
-    
-      if (empty($product_name)) {
-        $errName= "Bạn chưa nhập tên sản phẩm";
-       
-      }
-      if (empty($product_amount)) {
-        $errAmount="Bạn chưa nhập số lượng ";
-      }
-      if (empty($product_price)) {
-        $errPrice= "Bạn chưa nhập giá ";
-      }
       if(empty($filename)){
         $errFilename= "Bạn chưa nhập ảnh ";
-      }
-      if($category==''){
-        $errCate= "Bạn chưa chọn danh mục";
-      }
-      if(empty($commentStatus)){
-        $errCMT= "Bạn chưa chọn trạng thái bình luận";
-      }
-      if(empty($commentStatus)){
-        $errCMT= "Bạn chưa chọn trạng thái bình luận";
-      }
-      if(empty($desc_short)){
-        $errDesc_short= "Bạn chưa nhập mô tả ngắn";
-      }
-      if(empty($desc_detail)){
-        $errDesc_detail= "Bạn chưa nhập mô tả chi tiết";
-      }
-  
-      elseif (!is_numeric($product_price) || !is_numeric($product_amount)) {
-        $err= " Bạn phải nhập số vào 2 mục số lượng và giá ";
-        
       }
       else{
         
@@ -65,12 +25,12 @@
         }
         
         else{
-          $insert_product = "INSERT INTO products(name,detail,desc_short,cate_id,image,amount,price)
-             VALUES ('$product_name','$desc_detail','$desc_short','$category',
-             'public/images/$filename','$product_amount', '$product_price')";
-          executeQuery($insert_product);
+          $insert_product_image = "INSERT INTO product_gallreries(product_id,image_url)
+             VALUES ('$id','public/images/$filename')";
+          executeQuery($insert_product_image);
+          var_dump($insert_product_image);
           move_uploaded_file($tmp_name,$url.$filename);
-          header("location:".Base_url."admin/sanpham");
+          header("location:".Base_url."admin/galleries/?product-album=".$id);
         }
       }
     
@@ -191,7 +151,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Thêm sản phẩm
+        Thêm ảnh
         <small></small>
       </h1>
       <ol class="breadcrumb">
@@ -220,43 +180,6 @@
               <?php endif ?>
             </span>
             <br>
-            <label>Tên Sản Phẩm</label>
-            <input class="col-3 form-control container-fluid form-control-default" type="text" name="name" id="exampleFormControlFile1">
-            <span class="text-danger"><?php if(isset($errName)) echo $errName; ?></span>
-            <br>
-            <label>Danh Mục</label>  
-                <select class="col-3 container-fluid form-control form-control-default" name="categories">
-                    <option value="">Chọn Danh Mục</option>
-                    <?php foreach ($categories as $cate): ?> 
-                    <option  
-                      value="<?php echo $cate['id']; ?>">
-                      <?php echo $cate['cate_name']; ?>                
-                    </option>
-                    <?php endforeach; ?>
-                </select>
-            <span class="text-danger"><?php if(isset($errCate)) echo $errCate; ?></span> 
-            <br>
-            <label>Số Lượng</label>
-            <input class="col-3 form-control container-fluid form-control-default" type="text" 
-             name="amount" id="exampleFormControlFile1">
-            <span class="text-danger"><?php if(isset($errAmount)) echo $errAmount; ?></span>
-            <br>
-            <label>Giá</label>
-            <input class="col-3 form-control container-fluid form-control-default" type="text" class="form-control-file" name="price" id="exampleFormControlFile1">
-            <span class="text-danger"><?php if(isset($errPrice)) echo $errPrice; ?></span>
-            <br>
-            <label>Trang Thái Bình Luận</label>
-            <select class="col-3 container-fluid form-control form-control-default" name="comments">
-              <option value="">Chọn Trạng Thái</option>
-              <?php foreach ($disabled_cmt as $key => $dis_cmt): ?> 
-              <option  
-                value="<?php echo $dis_cmt; ?>"> 
-                <?php echo $key; ?>               
-              </option>
-              <?php endforeach; ?>
-            </select>
-            <span class="text-danger"><?php if(isset($errCMT)) echo $errCMT; ?></span>
-            <br>
             <label style="cursor: pointer;" class="text-center" for="fileUPLOAD">
               <i style="font-size: 23px;" class="fa fa-cloud-upload" aria-hidden="true">
               </i>
@@ -265,28 +188,20 @@
             <br>
             <span class="text-danger"><?php if(isset($errFilename)) echo $errFilename; ?></span>
             <br>
-            <br>
             <input type="submit" class="ppn col-2 container-fluid btn btn-success btn-sm" value="Thêm" name="submit">
-            <a href="<?php echo Base_url."admin/sanpham" ?>" class="col-2 container-fluid btn btn btn-danger  btn-sm">Hủy</a>
+            <a href="<?php echo Base_url."admin/galleries/?product-album=".$id ?>" class="col-2 container-fluid btn btn btn-danger  btn-sm">Hủy</a>
             <br>
-            
+            <script>
+                $(document).ready(function(){
+                    $('#fileUPLOAD').change(function(e){
+                        var fileName = e.target.files[0].name;
+                        $('#show_msg').html(fileName)
+                    });
+                });
+            </script>
             <br>
             <br> 
             <input style="display: none;" type="file" name="fileToUpload" id="fileUPLOAD">
-            </div>
-            <div class="rows col-lg-6 form-group"">
-              <br>
-              <label>Mô tả ngắn</label>
-                <textarea id="editor1" name="motangan" rows="2" cols="1000">
-                  
-                </textarea>
-              <span class="text-danger"><?php if(isset($errDesc_short)) echo $errDesc_short; ?></span>
-              <br>
-              <label>Mô tả chi tiết</label>
-                <textarea id="editor1" name="mota" rows="10" cols="1000"> 
-                </textarea>
-              <span class="text-danger"><?php if(isset($errDesc_detail)) echo $errDesc_detail; ?></span>
-              <br>
             </div>
         </form>
 

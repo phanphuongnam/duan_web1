@@ -9,7 +9,23 @@
   <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
+<script>
+    $(document).ready(function(){
+        $('#fileUPLOAD').change(function(e){
+            var fileName = e.target.files[0].name;
+            $('#show_msg').html(fileName)
+        });
+    });
 
+</script>
+<script type="text/javascript">
+   $(document).ready(function(){
+        $('#fileUPLOAD2').change(function(e){
+            var fileName = e.target.files[0].name;
+            $('.show_msg').html(fileName)
+        });
+    });
+</script>
 <!-- jQuery 3 -->
 
 <!-- jQuery UI 1.11.4 -->
@@ -26,6 +42,13 @@
     // Replace the <textarea id="editor1"> with a CKEditor
     // instance, using default configuration.
     CKEDITOR.replace('mota')
+    //bootstrap WYSIHTML5 - text editor
+    $('.textarea').wysihtml5()
+  })
+  $(function () {
+    // Replace the <textarea id="editor1"> with a CKEditor
+    // instance, using default configuration.
+    CKEDITOR.replace('content')
     //bootstrap WYSIHTML5 - text editor
     $('.textarea').wysihtml5()
   })

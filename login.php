@@ -1,6 +1,9 @@
 <?php
         require_once 'commons/db.php';
         session_start();
+        if (isset($_SESSION['login'])) {
+          header('location:'.Base_url);
+        }
         $errEmail=$errPassword="";
        // validate login
        if (isset($_POST['btn_s'])) {

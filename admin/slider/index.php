@@ -143,7 +143,7 @@
               <th scope="col">Mô Tả</th> 
               <th scope="col">Url</th>
               <th scope="col">
-                <a href="themsp.php">
+                <a href="them.php">
                   <button style="width:100%;max-width:100px;" class="btn btn-success btn-sm" type="submit"><i style="font-size: 14px;" class="fa fa-plus-circle " aria-hidden="true"></i>
                     Thêm</button>
                 </a>
@@ -159,16 +159,16 @@
               <img height="100px" src="<?php echo Base_url.$sls['image'] ?>">
                 
             </td>
-            <td><?php echo $sls['desc'] ?></td>
+            <td><?php echo $sls['description'] ?></td>
             <td><?php echo $sls['url'] ?></td>
             <td class="col-lg-2">
-              <a href="suasp.php?id=<?php echo $sls['id'] ?>">
+              <a href="sua.php?id=<?php echo $sls['id'] ?>">
                   <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                    Sửa</button> 
                 </a>
                 <a 
                   onclick="return confirm('Bạn có muốn xóa slider này không?')" 
-                  href="xoasp.php?id=<?php echo $sls['id'] ?>">
+                  href="xoa.php?id=<?php echo $sls['id'] ?>">
                   <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash"></i> Xóa </button>
                 </a>
               

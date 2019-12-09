@@ -22,6 +22,9 @@
    						where product_id =$id ORDER by comments.created_at DESC";
 
    	$ShowCMT=executeQuery($sql,true);
+   	if ($ShowCMT==null || $ShowCMT=="") {
+   		$errEmpty='Sản phẩm này chưa có bình luận';
+   	}
    	//Hiện thị chi tiết sản phẩm
  	$sql="SELECT * FROM products join categories on
  						 products.cate_id=categories.id where products.id = $id";
@@ -348,7 +351,7 @@
 					</span>
 				</div>
             	
-            	<?php elseif($detail_product['disabled_comment']==0): ?>
+            	<?php else: ?>
             	<div class="container mt-4">
             		<?php if(isset($_GET['err'])): ?>
             			<span class="text-danger">
@@ -364,10 +367,9 @@
 	            	</form>
 	            	
 	            </div>
-	            <?php endif; ?> 
-	            <?php if($ShowCMT=='' || $ShowCMT==null): ?>
-	            <?php else: ?>        
-        	 	<?php foreach($ShowCMT as $cmt): ?>
+	            <?php if($ShowCMT==null): ?>
+	            <?php else: ?>    
+        	 	<?php foreach($ShowCMT as $cmt): ?>	
 	             <div style="margin-top:20px;background: #f8f8f8;" class="border col-lg-8">
 	               <img style="float: left;border-radius:100%;width: 80px;height: 80px;" src="<?php echo Base_url.$cmt['avatar'] ?>">
 	               <div>
@@ -375,14 +377,18 @@
 	               <p style="padding: 5px 10px;"> <?php echo "Nội Dung:" .$cmt['content'] ?></p>
 	               <p style="padding: 5px 10px;"><?php echo "Ngày Bình Luận: ".$cmt['n'] ?></p>
 	               </div>
-	             </div>
+	             </div>	
           		<?php endforeach ?>
-	         	<?php endif; ?>      
+	         	<?php endif; ?>
+	         	<?php endif; ?>       
          	</div>	
 		</div>
+		<?php if($Relate_products==''): ?>
+		<?php else: ?>
 		<div class="product-sec1 px-sm-4 px-3 py-sm-5  py-3 mb-4 mt-5">
 			<h3 class="heading-tittle text-center font-italic">Các Sản Phẩm Liên Quan</h3>
 			<div class="row">
+
 			<?php foreach($Relate_products as $Relate_prs): ?>
 				<div class="col-md-4 product-men mt-5">
 					<div class="men-pro-item simpleCart_shelfItem">
@@ -422,7 +428,9 @@
 			<?php endforeach ?>
 		
 			</div>
+			
 		</div>
+		<?php endif; ?>
 	</div>
 	<!-- //Single Page -->
 

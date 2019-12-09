@@ -1,13 +1,58 @@
 <?php 
   session_start();
+
   require_once '../../commons/db.php';
+  use PHPMailer\PHPMailer\PHPMailer;
+  use PHPMailer\PHPMailer\Exception;
+  require '../../libarys/PHPMailer/src/Exception.php';
+  require '../../libarys/PHPMailer/src/PHPMailer.php';
+  require '../../libarys/PHPMailer/src/SMTP.php';
   if (!isset($_SESSION['login']) || $_SESSION['login']=='') {
     header('location:'.Base_url);
   }
-  $sql = "SELECT *,comments.id as cmtid,DATE_FORMAT(comments.created_at,'%d/%m/%Y') AS day_cmt FROM comments JOIN users on comments.user_id=users.id";
-  $comments =executeQuery($sql,true);
-  
+  $id=$_GET['id'];
+  $sql="select * from contacts where id = $id";
+  $detail_contact=executeQuery($sql,false);
+  if(isset($_POST['submit'])){
+    $content =$_POST['mota'];
+      if (empty($content)) {
+        $errDesc= "Bạn chưa nhập nội dung";
+       
+      }
+      else{
+        $mail = new PHPMailer(true);
 
+        try {
+            //Server settings
+            // $mail->SMTPDebug = 2;                      // Enable verbose debug output
+            $mail->isSMTP();                                            // Send using SMTP
+            $mail->Host       = 'smtp.gmail.com';                    // Set the SMTP server to send through
+            $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+            $mail->Username   = 'namhhtml001@gmail.com';                     // SMTP username
+            $mail->Password   = 'badboy1997';                               // SMTP password
+            $mail->SMTPSecure = 'tls';         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
+            $mail->Port       = 587;                                    // TCP port to connect to
+
+            //Recipients
+            $mail->setFrom("namhhtml001@gmail.com","Phụ Kiện Máy Tính");
+            $mail->addAddress($detail_contact['email']);               // Name is optional
+            $mail->addReplyTo('info@example.com', 'Information'); 
+            // Content
+            $mail->CharSet = "UTF-8";
+            $mail->isHTML(true);                            // Set email format to HTML
+            $mail->Subject ='Chào Bạn';
+            $mail->Body =$content;
+            $mail->send();
+            $thanhcong= "Phản hồi thành công";
+            // unset($_SESSION['CART']);
+          }catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        }
+    }
+      
+    
+    
+}
 
 
 ?>
@@ -66,13 +111,13 @@
             
             <li><a href="<?php echo Base_url.'admin/info'; ?>"><i class="fa fa-info" aria-hidden="true"></i>Thông tin website</a></li>
             <li><a href="<?php echo Base_url.'admin/slider'; ?>"><i class="fa fa-sliders" aria-hidden="true"></i>Slide</a></li>
-            <li class=""><a href="<?php echo Base_url.'admin/doitac'; ?>"><i class="fa fa-bandcamp" aria-hidden="true"></i> Đối Tác</a></li>
+            <li><a href="<?php echo Base_url.'admin/doitac'; ?>"><i class="fa fa-bandcamp" aria-hidden="true"></i> Đối Tác</a></li>
 
-            <li><a href="<?php echo Base_url.'admin/phanhoi'; ?>"><i class="fa fa-reply" aria-hidden="true"></i>Phản Hồi</a></li>
+            <li class="active"><a href="<?php echo Base_url.'admin/phanhoi'; ?>"><i class="fa fa-reply" aria-hidden="true"></i>Phản Hồi</a></li>
           </ul>
         </li>
 
-        <li class="">
+        <li>
           <a href="<?php echo Base_url ?>admin/sanpham">
             <i class="fa fa-product-hunt" aria-hidden="true"></i>
             <span>Sản Phẩm</span>
@@ -96,7 +141,7 @@
           </a>
         </li>
 
-        <li class="active">
+        <li>
           <a href="<?php echo Base_url ?>admin/binhluan">
             <i class="fa fa-comment-o" aria-hidden="true"></i>
             <span>Bình Luận</span>
@@ -123,60 +168,38 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Danh Sách Bình Luận
+        Trả Lời
         <small></small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Bình Luận</li>
+        <li class="active">Phản Hồi</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content container-fluid">
-      <table class="table text-center">
-        <thead>
-          <tr>
-              
-               
-              <th scope="col">Họ Tên</th>
-              <th scope="col">Email</th> 
-              <th scope="col">Avatar</th>
-              <th scope="col">Nội Dung</th>
-              <th scope="col">Ngày Bình Luận</th>
-              <th scope="col">Hành Động</th>
-          </tr>
-   
-      </thead>
-      <?php foreach($comments as $cmts) : ?>
-        <tbody>
-          <tr>
-            <td><?php echo $cmts['name'] ?></td>
-            <td><?php echo $cmts['email'] ?></td>
-            <td>
-              <img height="60px" src="<?php echo Base_url.$cmts['avatar'] ?>">
-            </td>
-            <td><?php echo $cmts['content'] ?></td>
-            <td><?php echo $cmts['day_cmt'] ?></td>
-            <td class="col-lg-2"> 
-                <a 
-                  onclick="return confirm('Bạn có muốn xóa bình luận này không?')" 
-                  href="xoacmts.php?id=<?php echo $cmts['cmtid'] ?>">
-                  <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash"></i> Xóa </button>
-                </a>
-              
-          </td>
-          </tr>
-        </tbody>
-
-        <?php endforeach ?>
-  
-      <!--------------------------
-        | Your Page Content Here |
-        -------------------------->
-        </table>
-
-        
+      <span class="text-primary"><?php if(isset($thanhcong)) echo $thanhcong; ?></span>
+      <form style="margin-bottom: 20px;font-family: time new roman"  action="" method="post" enctype="multipart/form-data" class="container-fluid">
+          <div class="rows col-lg-6 form-group">
+            <br>
+            <label>Email</label>
+            <input class="col-3 form-control container-fluid form-control-default" type="text" name="link" readonly id="exampleFormControlFile1" value="<?php echo $detail_contact['email'] ?>">
+            <span class="text-danger"><?php if(isset($errLink)) echo $errLink; ?></span>
+            <br>
+            <label>Họ Tên</label>
+            <input readonly class="col-3 form-control container-fluid form-control-default" type="text" name="link" id="exampleFormControlFile1" value="<?php echo $detail_contact['fullname'] ?>">
+            <span class="text-danger"><?php if(isset($errLink)) echo $errLink; ?></span>
+            <br>
+            <label>Nội dung</label>
+            <textarea id="editor1" name="mota" rows="10" cols="1000">
+            </textarea>
+            <span class="text-danger"><?php if(isset($errDesc)) echo $errDesc; ?></span>
+            <br>
+            <input type="submit" class="ppn col-2 container-fluid btn btn-success btn-sm" value="Gửi" name="submit">
+            <a href="<?php echo Base_url."admin/phanhoi" ?>" class="col-2 container-fluid btn btn btn-danger  btn-sm">Hủy</a>
+            <br> 
+        </form>
 
     </section>
        

@@ -272,7 +272,7 @@
             <label style="cursor: pointer;" class="text-center" for="fileUPLOAD">
               <i style="font-size: 23px;" class="fa fa-cloud-upload" aria-hidden="true">
               </i>
-              <span style="font-size: 15px">Tải Lên Ảnh</span>
+              <span id="show_msg" style="font-size: 15px">Tải Lên Ảnh</span>
               
             </label>
             

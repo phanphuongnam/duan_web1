@@ -1,12 +1,14 @@
 <?php 
   session_start();
-  require_once '../../commons/db.php';
+	require_once '../../commons/db.php';
   if (!isset($_SESSION['login']) || $_SESSION['login']=='') {
     header('location:'.Base_url);
   }
-  $sql = "SELECT *,comments.id as cmtid,DATE_FORMAT(comments.created_at,'%d/%m/%Y') AS day_cmt FROM comments JOIN users on comments.user_id=users.id";
-  $comments =executeQuery($sql,true);
-  
+  $album_id=$_GET['product-album'];
+  $sql = "select
+          * from product_gallreries where product_id = $album_id";
+  $product_gallreries =executeQuery($sql,true);
+	
 
 
 
@@ -24,7 +26,7 @@
 <div class="wrapper">
 
   <!-- main header -->
-      <?php include_once '../layouts/header.php'; ?>
+  		<?php include_once '../layouts/header.php'; ?>
   <!-- //main header -->
   <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar">
@@ -66,13 +68,13 @@
             
             <li><a href="<?php echo Base_url.'admin/info'; ?>"><i class="fa fa-info" aria-hidden="true"></i>Thông tin website</a></li>
             <li><a href="<?php echo Base_url.'admin/slider'; ?>"><i class="fa fa-sliders" aria-hidden="true"></i>Slide</a></li>
-            <li class=""><a href="<?php echo Base_url.'admin/doitac'; ?>"><i class="fa fa-bandcamp" aria-hidden="true"></i> Đối Tác</a></li>
+            <li><a href="<?php echo Base_url.'admin/doitac'; ?>"><i class="fa fa-bandcamp" aria-hidden="true"></i> Đối Tác</a></li>
 
             <li><a href="<?php echo Base_url.'admin/phanhoi'; ?>"><i class="fa fa-reply" aria-hidden="true"></i>Phản Hồi</a></li>
           </ul>
         </li>
 
-        <li class="">
+        <li class="active">
           <a href="<?php echo Base_url ?>admin/sanpham">
             <i class="fa fa-product-hunt" aria-hidden="true"></i>
             <span>Sản Phẩm</span>
@@ -96,7 +98,7 @@
           </a>
         </li>
 
-        <li class="active">
+        <li>
           <a href="<?php echo Base_url ?>admin/binhluan">
             <i class="fa fa-comment-o" aria-hidden="true"></i>
             <span>Bình Luận</span>
@@ -123,53 +125,55 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Danh Sách Bình Luận
+        Album Ảnh
         <small></small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Bình Luận</li>
+        <li class="active">Sản Phẩm</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content container-fluid">
-      <table class="table text-center">
+       <a href="them.php?id=<?php echo $album_id; ?>">
+          <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+           Thêm</button> 
+        </a>
+      <?php if($product_gallreries==''): ?>
+
+          <div class="container-fluid text-center">
+              <h4>Sản phẩm này chưa có ảnh</h4>
+          </div>
+      <?php else: ?>  
+      <table style="font-family: time new roman" class="table text-center">
         <thead>
-          <tr>
-              
-               
-              <th scope="col">Họ Tên</th>
-              <th scope="col">Email</th> 
-              <th scope="col">Avatar</th>
-              <th scope="col">Nội Dung</th>
-              <th scope="col">Ngày Bình Luận</th>
-              <th scope="col">Hành Động</th>
+          <tr class="col-md-5">    
+              <th class="col-md-3">Ảnh</th>
+              <th class="col-md-2">Tùy Chọn</th>  
           </tr>
    
       </thead>
-      <?php foreach($comments as $cmts) : ?>
+      <?php foreach($product_gallreries as $p_gallreries) : ?>
         <tbody>
-          <tr>
-            <td><?php echo $cmts['name'] ?></td>
-            <td><?php echo $cmts['email'] ?></td>
-            <td>
-              <img height="60px" src="<?php echo Base_url.$cmts['avatar'] ?>">
+          <tr class="col-md-5">
+            <td class="col-sm-3">
+              <img style="height: 100%;max-height: 80px;max-width: 100px;"
+               src="<?php echo Base_url.$p_gallreries['image_url'] ?>">
+               
             </td>
-            <td><?php echo $cmts['content'] ?></td>
-            <td><?php echo $cmts['day_cmt'] ?></td>
-            <td class="col-lg-2"> 
-                <a 
-                  onclick="return confirm('Bạn có muốn xóa bình luận này không?')" 
-                  href="xoacmts.php?id=<?php echo $cmts['cmtid'] ?>">
+            <td class="col-md-2">
+              
+                <a onclick="return confirm('Bạn có muốn xóa ảnh này không?')" 
+                  href="xoa.php?id-image=<?php echo $p_gallreries['id'].'&productid='.$album_id ?>" class="nam123">
                   <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash"></i> Xóa </button>
                 </a>
-              
-          </td>
+            </td>
           </tr>
         </tbody>
 
         <?php endforeach ?>
+      <?php endif ?>
   
       <!--------------------------
         | Your Page Content Here |
@@ -184,7 +188,7 @@
 
   <!-- /.content-wrapper -->
  <!-- footer -->
-  <?php include_once '../layouts/footer.php' ?>
+ 	<?php include_once '../layouts/footer.php' ?>
  <!-- footer -->
 </body>
 </html>

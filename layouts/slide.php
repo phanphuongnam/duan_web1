@@ -32,13 +32,10 @@
 				<div class="container">
 					<div class="w3l-space-banner">
 						<div class="carousel-caption p-lg-5 p-sm-4 p-3">
-							<p>Get flat
-								<span>10%</span> Cashback</p>
-							<h3 class="font-weight-bold pt-2 pb-lg-5 pb-4">The
-								<span>Big</span>
-								Sale
+							<h3 class="font-weight-bold pt-2 pb-lg-5 pb-4">
+								<?php echo $sl['description']; ?>
 							</h3>
-							<a class="button2" href="<?php echo Base_url ?>shop.php">Shop Now </a>
+							<a class="button2" href="<?php echo $sl['url']; ?>">Shop Now </a>
 						</div>
 					</div>
 				</div>
