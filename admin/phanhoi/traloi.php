@@ -135,11 +135,6 @@
             <span>Đơn Hàng</span>
           </a>
         </li>
-        <li>
-          <a href="<?php echo Base_url ?>admin/hoadonchitiet">
-            <i class="fa fa-book"></i><span>Đơn Hàng Chi Tiết</span>
-          </a>
-        </li>
 
         <li>
           <a href="<?php echo Base_url ?>admin/binhluan">

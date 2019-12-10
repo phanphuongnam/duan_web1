@@ -49,4 +49,10 @@
 		'Mở' => 0
 
 	];
+	$status_order=[
+		"<button class='btn btn-success'>Đã thanh toán</button>" => 2,
+		"<button class='btn btn-warning'>Đang chuyển</button>" => 1,
+		"<button class='btn btn-info' disabled='disabled'>Chưa thanh toán</button>" =>0,
+		"<button class='btn btn-danger'>Hủy</button>" => -1
+	]
 ?>

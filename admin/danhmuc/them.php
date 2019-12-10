@@ -85,7 +85,7 @@
             
             <li><a href="<?php echo Base_url.'admin/info'; ?>"><i class="fa fa-info" aria-hidden="true"></i>Thông tin website</a></li>
             <li><a href="<?php echo Base_url.'admin/slider'; ?>"><i class="fa fa-sliders" aria-hidden="true"></i>Slide</a></li>
-            <li class="active"><a href="<?php echo Base_url.'admin/doitac'; ?>"><i class="fa fa-bandcamp" aria-hidden="true"></i> Đối Tác</a></li>
+            <li><a href="<?php echo Base_url.'admin/doitac'; ?>"><i class="fa fa-bandcamp" aria-hidden="true"></i> Đối Tác</a></li>
 
             <li><a href="<?php echo Base_url.'admin/phanhoi'; ?>"><i class="fa fa-reply" aria-hidden="true"></i>Phản Hồi</a></li>
           </ul>
@@ -97,7 +97,7 @@
             <span>Sản Phẩm</span>
           </a>
         </li>
-        <li>
+        <li class="active">
           <a href="<?php echo Base_url ?>admin/danhmuc">
             <i class="fa fa-folder-open-o" aria-hidden="true"></i>
             <span>Danh Mục</span>
@@ -107,11 +107,6 @@
           <a href="<?php echo Base_url ?>admin/hoadon">
             <i class="fa fa-shopping-basket" aria-hidden="true"></i>
             <span>Đơn Hàng</span>
-          </a>
-        </li>
-        <li>
-          <a href="<?php echo Base_url ?>admin/hoadonchitiet">
-            <i class="fa fa-book"></i><span>Đơn Hàng Chi Tiết</span>
           </a>
         </li>
 

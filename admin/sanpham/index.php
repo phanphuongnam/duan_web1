@@ -97,12 +97,6 @@
           </a>
         </li>
         <li>
-          <a href="<?php echo Base_url ?>admin/hoadonchitiet">
-            <i class="fa fa-book"></i><span>Đơn Hàng Chi Tiết</span>
-          </a>
-        </li>
-
-        <li>
           <a href="<?php echo Base_url ?>admin/binhluan">
             <i class="fa fa-comment-o" aria-hidden="true"></i>
             <span>Bình Luận</span>
@@ -139,7 +133,7 @@
     </section>
 
     <!-- Main content -->
-    <section class="content container-fluid">
+    <section style="overflow: auto;" class="content container-fluid">
       <table style="font-family: time new roman" class="table text-center">
         <thead>
           <tr>

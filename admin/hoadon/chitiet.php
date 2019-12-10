@@ -1,35 +1,17 @@
 <?php 
   session_start();
-	require_once '../../commons/db.php';
+  require_once '../../commons/db.php';
   if (!isset($_SESSION['login']) || $_SESSION['login']=='') {
     header('location:'.Base_url);
   }
-  $id = $_GET['id'];
-  $sql="select * from categories where id =$id";
-  $detail_cate =executeQuery($sql);
-  if(isset($_POST['submit'])){
-    $cate_name =$_POST['cate_name'];
-    $desc =$_POST['mota'];
-    $sql="SELECT * FROM categories where cate_name = '$cate_name' and id <> $id";
-    $checkCate=executeQuery($sql,false);
-      if (empty($desc)) {
-        $errDesc= "Bạn chưa nhập tên mô tả";
-      }
-      if (empty($cate_name)) {
-        $errName= "Bạn chưa nhập tên danh mục";
-      }
-      elseif ($checkCate==true) {
-        $errName= "Tên danh mục đã tồn tại";
-      }
-      else{
-        $insert_cate = "INSERT INTO categories(cate_name,description)
-             VALUES ('$cate_name','$desc')";
-        executeQuery($insert_cate);
-        header("location:".Base_url.'admin/danhmuc');
-      }
-    
-    
-}
+  $id=$_GET['id'];
+  $sql = "SELECT *,DATE_FORMAT(orders.created_at,'%d/%m/%Y') AS day_buy FROM orders join
+          order_detail on orders.id=order_detail.order_id join products on 
+          order_detail.product_id = products.id
+           where order_id = $id";
+  $order_detail =executeQuery($sql,true);
+  
+
 
 
 ?>
@@ -46,7 +28,7 @@
 <div class="wrapper">
 
   <!-- main header -->
-  		<?php include_once '../layouts/header.php'; ?>
+      <?php include_once '../layouts/header.php'; ?>
   <!-- //main header -->
   <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar">
@@ -86,27 +68,27 @@
           <ul class="treeview-menu">
             <li><a href="<?php echo Base_url.'admin'; ?>"><i class="fa fa-bar-chart" aria-hidden="true"></i></i> Thống kê</a></li>
             
-            <li><a href="<?php echo Base_url.'admin/info'; ?>"><i class="fa fa-info" aria-hidden="true"></i>Thông tin website</a></li>
-            <li><a href="<?php echo Base_url.'admin/slider'; ?>"><i class="fa fa-sliders" aria-hidden="true"></i>Slide</a></li>
-            <li><a href="<?php echo Base_url.'admin/doitac'; ?>"><i class="fa fa-bandcamp" aria-hidden="true"></i> Đối Tác</a></li>
+            <li><a href="#"><i class="fa fa-info" aria-hidden="true"></i>Thông tin website</a></li>
+            <li><a href="#"><i class="fa fa-sliders" aria-hidden="true"></i>Slide</a></li>
+            <li><a href="#"><i class="fa fa-bandcamp" aria-hidden="true"></i> Đối Tác</a></li>
 
-            <li><a href="<?php echo Base_url.'admin/phanhoi'; ?>"><i class="fa fa-reply" aria-hidden="true"></i>Phản Hồi</a></li>
+            <li><a href="#"><i class="fa fa-reply" aria-hidden="true"></i>Phản Hồi</a></li>
           </ul>
         </li>
 
-        <li>
+        <li class="">
           <a href="<?php echo Base_url ?>admin/sanpham">
             <i class="fa fa-product-hunt" aria-hidden="true"></i>
             <span>Sản Phẩm</span>
           </a>
         </li>
-        <li class="active">
+        <li>
           <a href="<?php echo Base_url ?>admin/danhmuc">
             <i class="fa fa-folder-open-o" aria-hidden="true"></i>
             <span>Danh Mục</span>
           </a>
         </li>
-        <li>
+        <li class="active">
           <a href="<?php echo Base_url ?>admin/hoadon">
             <i class="fa fa-shopping-basket" aria-hidden="true"></i>
             <span>Đơn Hàng</span>
@@ -140,53 +122,49 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Sửa danh mục
+        Chi Tiết Đơn Hàng
         <small></small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Danh Mục</li>
+        <li class="active">Đơn Hàng</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content container-fluid">
-      <form style="margin-bottom: 20px;font-family: time new roman"  action="" method="post" enctype="multipart/form-data" class="container-fluid">
-          <div class="rows col-lg-6 form-group">
-            <span>
-              <?php if(isset($errType)): ?>   
-               <button type='button' class='btn btn-danger btn-sm'>
-                  <i style='font-size: 15px;' class='fa fa-exclamation-triangle' aria-hidden='true'>
-                   <?php echo $errType; ?>
-                  </i>
-              </button>
-              <?php elseif(isset($err)): ?>   
-               <button type='button' class='btn btn-danger btn-sm'>
-                  <i style='font-size: 15px;' class='fa fa-exclamation-triangle' aria-hidden='true'>
-                   <?php echo $err; ?>
-                  </i>
-              </button>
-              <?php endif ?>
-            </span>
-            <br>
-            <label>Tên Danh Mục</label>
-            <input class="col-3 form-control container-fluid form-control-default" type="text" name="cate_name" value="<?php echo $detail_cate['cate_name'] ?>" id="exampleFormControlFile1">
-            <span class="text-danger"><?php if(isset($errName)) echo $errName; ?></span>
-            <br>
-            <label>Mô Tả</label>
-            <textarea id="editor1" name="mota" rows="10" cols="1000">
-             <?php echo $detail_cate['description']; ?>
-            </textarea>
-            <span class="text-danger"><?php if(isset($errDesc)) echo $errDesc; ?></span>
-            <br>
-            
-            <br>
-            <input type="submit" class="ppn col-2 container-fluid btn btn-success btn-sm" 
-            value="Sửa" name="submit">
-            <a href="<?php echo Base_url."admin/danhmuc" ?>" class="col-2 container-fluid btn btn btn-danger  btn-sm">Hủy</a>
-            <br> 
-            <input style="display: none;" type="file" name="fileToUpload" id="fileUPLOAD">
-        </form>
+      <table style="font-family: time new roman" class="table text-center">
+        <thead>
+          <tr>
+              <th scope="col">Tên Sản Phẩm</th> 
+              <th scope="col">Ảnh</th>
+              <th scope="col">Số Lượng</th>  
+              <th scope="col">Giá</th>
+          </tr>
+   
+      </thead>
+      <?php foreach($order_detail as $ords) : ?>
+        <tbody>
+          <tr>
+            <td><?php echo $ords['name'] ?></td>
+            <td>
+
+               <img width="100px" src="<?php echo Base_url.$ords['image'] ?>">
+              
+            </td>
+            <td><?php echo $ords['quantity'] ?></td>
+            <td><?php echo $ords['unit_price'] ?> VNĐ</td>
+          </tr>
+        </tbody>
+
+        <?php endforeach ?>
+  
+      <!--------------------------
+        | Your Page Content Here |
+        -------------------------->
+        </table>
+
+        
 
     </section>
        
@@ -194,7 +172,7 @@
 
   <!-- /.content-wrapper -->
  <!-- footer -->
- 	<?php include_once '../layouts/footer.php' ?>
+  <?php include_once '../layouts/footer.php' ?>
  <!-- footer -->
 </body>
 </html>

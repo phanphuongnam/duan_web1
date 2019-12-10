@@ -14,6 +14,10 @@
   $totalbrs=executeQuery($sql);
   $sql= "select count(*) as totalContacts from contacts";
   $totalContacts=executeQuery($sql);
+  $sql= "select count(*) as totalOrders from orders";
+  $totalOrders=executeQuery($sql);
+  $sql= "select count(*) as totalUsers from users";
+  $totalUsers=executeQuery($sql);
 
 	
 
@@ -100,12 +104,6 @@
             <span>Đơn Hàng</span>
         	</a>
         </li>
-        <li>
-        	<a href="<?php echo Base_url ?>admin/hoadonchitiet">
-        		<i class="fa fa-book"></i><span>Đơn Hàng Chi Tiết</span>
-        	</a>
-        </li>
-
         <li>
         	<a href="<?php echo Base_url ?>admin/binhluan">
         		<i class="fa fa-comment-o" aria-hidden="true"></i>
@@ -227,28 +225,28 @@
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3>65</h3>
+              <h3><?php echo $totalOrders['totalOrders'] ?></h3>
 
               <p>Đơn Hàng</p>
             </div>
             <div class="icon">
               <i class="ion ion-pie-graph"></i>
             </div>
-            <a href="#" class="small-box-footer">Xem Chi Tiết <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="<?php echo Base_url ?>admin/hoadon" class="small-box-footer">Xem Chi Tiết <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
           <div class="col-lg-3 col-xs-6">
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3>65</h3>
+              <h3><?php echo $totalUsers['totalUsers'] ?></h3>
 
               <p>Users</p>
             </div>
             <div class="icon">
               <i class="ion ion-pie-graph"></i>
             </div>
-            <a href="#" class="small-box-footer">Xem Chi Tiết <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="<?php echo Base_url ?>admin/users" class="small-box-footer">Xem Chi Tiết <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->

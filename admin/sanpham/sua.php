@@ -165,12 +165,6 @@
           </a>
         </li>
         <li>
-          <a href="<?php echo Base_url ?>admin/hoadonchitiet">
-            <i class="fa fa-book"></i><span>Đơn Hàng Chi Tiết</span>
-          </a>
-        </li>
-
-        <li>
           <a href="<?php echo Base_url ?>admin/binhluan">
             <i class="fa fa-comment-o" aria-hidden="true"></i>
             <span>Bình Luận</span>

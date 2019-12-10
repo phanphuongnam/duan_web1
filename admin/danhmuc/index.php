@@ -90,11 +90,6 @@
             <span>Đơn Hàng</span>
           </a>
         </li>
-        <li>
-          <a href="<?php echo Base_url ?>admin/hoadonchitiet">
-            <i class="fa fa-book"></i><span>Đơn Hàng Chi Tiết</span>
-          </a>
-        </li>
 
         <li>
           <a href="<?php echo Base_url ?>admin/binhluan">
@@ -138,7 +133,7 @@
         <thead>
           <tr>
               <th scope="col">Tên Danh Mục</th>  
-              <th scope="col">Số Lượng</th>
+              <th scope="col">Số Lượng Sản Phẩm</th>
               <th scope="col">Mô Tả</th>
               <th scope="col">
                 <a href="them.php">
@@ -153,7 +148,13 @@
         <tbody>
           <tr>
             <td><?php echo $cates['cate_name'] ?></td>
-            <td><?php echo $cates['totalpros'] ?></td>
+            <td>
+              <?php if($cates['totalpros']=='' || $cates['totalpros']==0): ?>
+                Chưa có sản phẩm!
+              <?php else: ?>
+                <?php echo $cates['totalpros'] ?>
+              <?php endif; ?> 
+            </td>
             <td><?php echo $cates['description'] ?></td>
             <td class="col-lg-2">
               <a href="sua.php?id=<?php echo $cates['id'] ?>">
