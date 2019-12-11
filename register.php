@@ -7,7 +7,7 @@
         $errName=$errEmail=$errPassword=$errPassword_cf=$sucsess="";
 
        if (isset($_POST['btn_s'])) {
-         $test='/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)$/';
+         $test='/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-.]+(\.[a-z0-9-]+)$/';
          $email=$_POST['email'];
          $name=$_POST['name'];
          $password=$_POST['password'];
@@ -102,7 +102,7 @@
 <body class="hold-transition register-page">
 <div class="register-box">
   <div class="register-logo">
-    <a href=""><b>Admin</b>LTE</a>
+    <a href="<?php echo Base_url; ?>"><b>Trang</b>Chủ</a>
   </div>
 
   <div class="register-box-body">

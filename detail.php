@@ -37,6 +37,8 @@
  	$sql="SELECT *,products.id AS pro_id FROM products join categories on
  						 products.cate_id=categories.id where products.id <> $id and products.cate_id = $id_cate";
  	$Relate_products = executeQuery($sql,true);
+ 	$sql="UPDATE products SET views = views+1 WHERE id = $id";
+ 	executeQuery($sql);
 ?>
 <!DOCTYPE html>
 <html lang="zxx">

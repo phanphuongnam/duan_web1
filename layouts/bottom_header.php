@@ -13,11 +13,15 @@ foreach ($cart as $item) {
 			<div class="row header-bot_inner_wthreeinfo_header_mid">
 				<!-- logo -->
 				<div class="col-md-3 logo_agile">
+
 					<h1 class="text-center">
 						<a href="<?php echo Base_url ?>" class="font-weight-bold font-italic">
-							<img src="<?php echo Base_url ?><?php echo $info_web['logo'] ?>" alt=" " class="img-fluid"><?php echo $info_web['slogan'] ?>
+							<img src="<?php echo Base_url ?><?php echo $info_web['logo'] ?>" alt=" " class="img-fluid">
+							<?php echo $info_web['slogan'] ?>
+
 						</a>
 					</h1>
+
 				</div>
 				<!-- //logo -->
 				<!-- header-bot -->

@@ -25,6 +25,7 @@
     $commentStatus=$_POST['comments'];
     $desc_short = $_POST['motangan'];
     $desc_detail = $_POST['mota'];
+    $sale_off=$_POST['sale_off'];
     $imageFileType = pathinfo($filename,PATHINFO_EXTENSION);
     if(empty($product_name) || empty($product_amount) || empty($product_price) || empty($desc_detail)
      || empty($desc_short))
@@ -52,7 +53,7 @@
         
     }
     elseif($filename==''){
-        $update_product = "UPDATE products SET cate_id='$category', name = '$product_name', amount = '$product_amount', price = '$product_price',disabled_comment='$commentStatus',
+        $update_product = "UPDATE products SET cate_id='$category', name = '$product_name', amount = '$product_amount', price = '$product_price',sale_off='$sale_off',disabled_comment='$commentStatus',
         desc_short='$desc_short',detail='$desc_detail' WHERE id = $id";
         executeQuery($update_product);
         header("location:".Base_url."admin/sanpham");
@@ -249,6 +250,10 @@
             <input class="col-3 form-control container-fluid form-control-default" type="text" class="form-control-file" name="price" id="exampleFormControlFile1"
             value="<?php echo $product['price'] ?>">
             <span class="text-danger"><?php if(isset($errPrice)) echo $errPrice; ?></span>
+            <br>
+             <label>Giảm Giá</label>
+            <input class="col-3 form-control container-fluid form-control-default" type="text" class="form-control-file" name="sale_off" id="exampleFormControlFile1"
+            value="<?php echo $product['sale_off'] ?>">
             <br>
             <label>Trang Thái Bình Luận</label>
             <select class="col-3 container-fluid form-control form-control-default" name="comments">

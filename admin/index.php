@@ -18,6 +18,8 @@
   $totalOrders=executeQuery($sql);
   $sql= "select count(*) as totalUsers from users";
   $totalUsers=executeQuery($sql);
+  $sql = "SELECT *,(SELECT COUNT(*) FROM products WHERE products.cate_id=categories.id) as total_product FROM categories";
+  $cate = executeQuery($sql,true);
 
 	
 
@@ -31,6 +33,33 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>AdminLTE 2 | Dashboard</title>
   <?php include_once 'layouts/head_tag.php'; ?>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Danh Mục', 'Số Lượng Sản Phẩm'],
+          <?php foreach($cate as $cate): ?>
+          ['<?php echo 'Danh Mục '. $cate['cate_name'] ?>',<?php echo $cate['total_product'] ?>],
+
+          <?php endforeach ?>
+          
+        ]);
+
+        var options = {
+          title: 'Biểu Đồ Thống Kê'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+
   
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -147,6 +176,7 @@
     <!-- Main content -->
     <section class="content">
       <!-- Small boxes (Stat box) -->
+     
       <div class="row">
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
@@ -251,12 +281,49 @@
         </div>
         <!-- ./col -->
       </div>
-      <!-- /.row -->
-      <!-- Main row -->
-  
-        <!-- /.Left col -->
-        <!-- right col (We are only adding the ID to make the widgets sortable)-->
-       
+       <div class="nav-tabs-custom">
+          <div id="piechart" style="width: 100%;height: 400px;overflow:auto;"></div>
+          <canvas id="myChart" width="200" height="100"></canvas>
+          <script>
+          var ctx = document.getElementById('myChart').getContext('2d');
+          var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+          });
+          </script>
+      </div>
   </div>
   <!-- /.content-wrapper -->
  <!-- footer -->

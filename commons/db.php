@@ -54,5 +54,15 @@
 		"<button class='btn btn-warning'>Đang chuyển</button>" => 1,
 		"<button class='btn btn-info' disabled='disabled'>Chưa thanh toán</button>" =>0,
 		"<button class='btn btn-danger'>Hủy</button>" => -1
-	]
+	];
+	$USER_ROLES = [
+	'Quản Trị Viên' => 2,
+	"Biên Tập Viên" => 1,
+	"Thành Viên" => 0
+];
+	$USER_STATUS = [
+	'Kích Hoạt' => 1,
+	"Chưa Kích Hoạt" => 0,
+	"Banned" => -1
+];
 ?>

@@ -1,15 +1,22 @@
 <?php 
   session_start();
-  require_once '../../commons/db.php';
+	require_once '../../commons/db.php';
   if (!isset($_SESSION['login']) || $_SESSION['login']=='') {
     header('location:'.Base_url);
   }
-  $sql = "SELECT *,DATE_FORMAT(users.created_at,'%d/%m/%Y') AS day_join FROM users";
-  $users =executeQuery($sql,true);
-  
+  $id=$_GET['id'];
+  $sql = "select
+          *,DATE_FORMAT(orders.created_at,'%d/%m/%Y') AS day_buy
+          from orders where id =$id";
+  $order_detail =executeQuery($sql,false);
+  if(isset($_POST['submit'])){
+    $status_payment =$_POST['status_payment'];
+    $update_order = "UPDATE orders SET status='$status_payment' WHERE id = $id";
+    executeQuery($update_order);
+    header("location:".Base_url."admin/hoadon");
 
-
-
+         
+  }
 ?>
 <!DOCTYPE html>
 <html>
@@ -24,7 +31,7 @@
 <div class="wrapper">
 
   <!-- main header -->
-      <?php include_once '../layouts/header.php'; ?>
+  		<?php include_once '../layouts/header.php'; ?>
   <!-- //main header -->
   <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar">
@@ -66,13 +73,13 @@
             
             <li><a href="<?php echo Base_url.'admin/info'; ?>"><i class="fa fa-info" aria-hidden="true"></i>Thông tin website</a></li>
             <li><a href="<?php echo Base_url.'admin/slider'; ?>"><i class="fa fa-sliders" aria-hidden="true"></i>Slide</a></li>
-            <li class=""><a href="<?php echo Base_url.'admin/doitac'; ?>"><i class="fa fa-bandcamp" aria-hidden="true"></i> Đối Tác</a></li>
+            <li><a href="<?php echo Base_url.'admin/doitac'; ?>"><i class="fa fa-bandcamp" aria-hidden="true"></i> Đối Tác</a></li>
 
             <li><a href="<?php echo Base_url.'admin/phanhoi'; ?>"><i class="fa fa-reply" aria-hidden="true"></i>Phản Hồi</a></li>
           </ul>
         </li>
 
-        <li class="">
+        <li class="active">
           <a href="<?php echo Base_url ?>admin/sanpham">
             <i class="fa fa-product-hunt" aria-hidden="true"></i>
             <span>Sản Phẩm</span>
@@ -90,7 +97,6 @@
             <span>Đơn Hàng</span>
           </a>
         </li>
-
         <li>
           <a href="<?php echo Base_url ?>admin/binhluan">
             <i class="fa fa-comment-o" aria-hidden="true"></i>
@@ -103,7 +109,7 @@
             <span>Mã Giảm Giá</span>
           </a>
         </li>
-         <li class="active">
+         <li>
           <a href="<?php echo Base_url ?>admin/users">
             <i class="fa fa-users" aria-hidden="true"></i>
             <span>Users</span>
@@ -118,7 +124,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Chi Tiết Đơn Hàng
+        Cập nhật đơn hàng
         <small></small>
       </h1>
       <ol class="breadcrumb">
@@ -129,68 +135,63 @@
 
     <!-- Main content -->
     <section class="content container-fluid">
-      <table style="font-family: time new roman" class="table text-center">
-        <thead>
-          <tr>
-              <th scope="col">Họ Tên</th> 
-              <th scope="col">Avatar</th>
-              <th scope="col">Email</th>  
-              <th scope="col">Vai trò</th>
-              <th scope="col">Trạng thái</th>
-              <th scope="col">Ngày tham gia</th>
-              <th scope="col">Tùy Chọn</th>
-          </tr>
-   
-      </thead>
-      <?php foreach($users as $urs) : ?>
-        <tbody>
-          <tr>
-            <td><?php echo $urs['name'] ?></td>
-            <td>
-
-               <img width="100px" src="<?php echo Base_url.$urs['avatar'] ?>">
-              
-            </td>
-            <td><?php echo $urs['email'] ?></td>
-            <td>
-              <?php foreach($USER_ROLES as $key => $value): ?>
-                  <?php if($urs['role']==$value): ?>
-                    <?php echo $key; ?>
+      <form style="margin-bottom: 20px;font-family: time new roman"  action="" method="post" enctype="multipart/form-data" class="container-fluid form-group">
+          <div class="rows col-lg-6">
+            <label>Tên Khách Hàng</label>
+            <input readonly class="col-3 form-control container-fluid form-control-default" type="text" name="name" id="exampleFormControlFile1" 
+            value="<?php echo $order_detail['customer_name'] ?>">
+            <span class="text-danger"><?php if(isset($errName)) echo $errName; ?></span>
+            <br>
+            <label>Số Điện Thoại</label>
+            <input readonly class="col-3 form-control container-fluid form-control-default" type="text" 
+             name="amount" id="exampleFormControlFile1"
+              value="<?php echo $order_detail['customer_phone'] ?>">
+            <span class="text-danger"><?php if(isset($errAmount)) echo $errAmount; ?></span>
+            <br>
+            <label>Email</label>
+            <input readonly class="col-3 form-control container-fluid form-control-default" type="text" class="form-control-file" name="price" id="exampleFormControlFile1"
+            value="<?php echo $order_detail['customer_email'] ?>">
+           
+            <br>
+            <label>Địa Chỉ</label>
+            <input readonly class="col-3 form-control container-fluid form-control-default" type="text" class="form-control-file" name="price" id="exampleFormControlFile1"
+            value="<?php echo $order_detail['customer_address'] ?>">
+           
+            <br>
+            <label>Tổng Tiền</label>
+            <input readonly class="form-control container-fluid form-control-default" type="text" class="form-control-file" name="price" id="exampleFormControlFile1"
+            value="<?php echo $order_detail['total_price'] ?> VNĐ">
+           
+            <br>
+            <label>Phương Thức Thanh Toán</label>
+            <input readonly class="container-fluid form-control form-control-default" type="text"value="<?php foreach($payment_method as $key => $value) : ?><?php if($order_detail['payment_method']==$value): ?><?php echo $key; ?>
+            <?php endif; ?>
+            <?php endforeach; ?>
+            ">
+            <br>
+            <label>Ngày Mua</label>
+            <input readonly class="col-3 form-control container-fluid form-control-default" type="text" class="form-control-file" name="price" id="exampleFormControlFile1"
+            value="<?php echo $order_detail['day_buy'] ?>">
+           
+            <br>
+            <label>Trang Thái Thanh Toán</label>
+            <select class="col-3 container-fluid form-control form-control-default" name="status_payment">
+              <?php foreach ($status_order as $key => $value): ?> 
+              <option 
+                <?php if ($order_detail['status'] == $value): ?>
+                    selected
                   <?php endif; ?>
-              <?php endforeach; ?>    
-            </td>
-            <td>
-              <?php foreach($USER_STATUS as $key => $value): ?>
-                  <?php if($urs['status']==$value): ?>
-                    <?php echo $key; ?>
-                  <?php endif; ?>
+                value="<?php echo $value; ?>">
+                <?php echo $key; ?>
+              </option>
               <?php endforeach; ?>
-            </td>
-            <td><?php echo $urs['day_join'] ?></td>
-            <td class="col-lg-2">
-               <a href="sua.php?id=<?php echo $urs['id'] ?>">
-                  <button class="btn btn-info btn-sm" type="submit">
-                   <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Sửa 
-                  </button> 
-              </a>
-              <a 
-                onclick="return confirm('Bạn có muốn xóa thành viên <?php echo $urs['name'] ?> không?')" 
-                href="xoa.php?id=<?php echo $urs['id'] ?>">
-                <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash"></i> Xóa </button>
-              </a>
-              
-          </td>
-          </tr>
-        </tbody>
-
-        <?php endforeach ?>
-  
-      <!--------------------------
-        | Your Page Content Here |
-        -------------------------->
-        </table>
-
-        
+            </select>
+            <br>
+            
+            <input type="submit" class="ppn col-2 container-fluid btn btn-success btn-sm" value="Cập nhật" name="submit">
+            <a href="<?php echo Base_url."admin/hoadon" ?>" class="col-2 container-fluid btn btn btn-danger  btn-sm">Hủy</a>
+          </div>
+        </form>
 
     </section>
        
@@ -198,7 +199,7 @@
 
   <!-- /.content-wrapper -->
  <!-- footer -->
-  <?php include_once '../layouts/footer.php' ?>
+ 	<?php include_once '../layouts/footer.php' ?>
  <!-- footer -->
 </body>
 </html>
