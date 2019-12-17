@@ -1,0 +1,2 @@
+namhhtml001@gmail.com
+SELECT * FROM historys join users on historys.id_user=users.id JOIN orders ON historys.id_order=orders.id JOIN order_detail ON orders.id=order_detail.order_id JOIN products ON order_detail.product_id=products.id WHERE historys.id_user=

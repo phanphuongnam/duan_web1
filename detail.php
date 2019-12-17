@@ -343,8 +343,8 @@
 				<?php endif; ?>
 				)
 			</h5>
-			<div id="load_cmt" style="margin-top: 40px;" class="container">	
-            <p style="color:red;"> <?php if(isset($err)) echo $err; ?> </p>
+			<div id="load_cmt" class="container-fluid">	
+            	<p style="color:red;"> <?php if(isset($err)) echo $err; ?> </p>
             	<?php if($detail_product['disabled_comment']<0): ?>
             	<div class="container text-center">
             		<span class="alert alert-danger">
@@ -354,7 +354,7 @@
 				</div>
             	
             	<?php else: ?>
-            	<div class="container mt-4">
+            	<div class="container-fluid mt-4">
             		<?php if(isset($_GET['err'])): ?>
             			<span class="text-danger">
             				<?php echo $_GET['err'] ?>
@@ -372,18 +372,22 @@
 	            <?php if($ShowCMT==null): ?>
 	            <?php else: ?>    
         	 	<?php foreach($ShowCMT as $cmt): ?>	
-	             <div style="margin-top:20px;background: #f8f8f8;" class="border col-lg-8">
-	               <img style="float: left;border-radius:100%;width: 80px;height: 80px;" src="<?php echo Base_url.$cmt['avatar'] ?>">
-	               <div>
-	               <p style="padding: 5px 10px;"> <?php echo " Họ Tên:". $cmt['name'] ?></p>
-	               <p style="padding: 5px 10px;"> <?php echo "Nội Dung:" .$cmt['content'] ?></p>
-	               <p style="padding: 5px 10px;"><?php echo "Ngày Bình Luận: ".$cmt['n'] ?></p>
+	             <div style="margin-top:20px;background: #f8f8f8;float: left;" class="border col-lg-8">
+	             	<div style="float: left;" class="col-sm-2 col-md-2">
+	             		<img class="" src="<?php echo Base_url.$cmt['avatar'] ?>">
+	             	</div>
+	               
+	               <div class="col-sm-8">
+	               <p> <?php echo " Họ Tên:". $cmt['name'] ?></p>
+	               <p> <?php echo "Nội Dung:" .$cmt['content'] ?></p>
+	               <p><?php echo "Ngày Bình Luận: ".$cmt['n'] ?></p>
 	               </div>
 	             </div>	
           		<?php endforeach ?>
 	         	<?php endif; ?>
 	         	<?php endif; ?>       
-         	</div>	
+         	</div>
+         	<div style="clear: both;"></div>	
 		</div>
 		<?php if($Relate_products==''): ?>
 		<?php else: ?>

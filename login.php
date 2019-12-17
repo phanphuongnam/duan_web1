@@ -20,7 +20,7 @@
           
          }
          elseif ($user['email']==null || $user['email']=='') {
-           $errEmail="Email không tồn tại";
+           $errEmail="Email sai";
          }
          // elseif ($user['trangthai']==2) {
          //     $err0="Đăng Nhập Thất Bại, Tài Khoản Của Bạn Chưa Được Kích Hoạt";
@@ -31,10 +31,9 @@
             $_SESSION['login']=$user;
             header('location:'.Base_url);
             
-
          }
           else{
-            $errPassword="Bạn nhập sai email hoặc password ";
+            $errPassword="Bạn nhập sai password ";
          }
          
        }

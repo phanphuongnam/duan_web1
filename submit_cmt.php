@@ -21,7 +21,8 @@
             values
                ('$content',$product_id,$user_id)";
        executeQuery($sql,true);
-        header('location:'.Base_url.'detail.php?id='.$product_id);
+       var_dump($sql);
+        // header('location:'.Base_url.'detail.php?id='.$product_id);
    }
    
  

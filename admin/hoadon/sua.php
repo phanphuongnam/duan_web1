@@ -164,10 +164,8 @@
            
             <br>
             <label>Phương Thức Thanh Toán</label>
-            <input readonly class="container-fluid form-control form-control-default" type="text"value="<?php foreach($payment_method as $key => $value) : ?><?php if($order_detail['payment_method']==$value): ?><?php echo $key; ?>
-            <?php endif; ?>
-            <?php endforeach; ?>
-            ">
+            <input readonly class="container-fluid form-control form-control-default" type="text" 
+            value="<?php foreach($payment_method as $key => $value) : ?><?php if($order_detail['payment_method']==$value): ?><?php echo $key; ?><?php endif; ?><?php endforeach; ?>">
             <br>
             <label>Ngày Mua</label>
             <input readonly class="col-3 form-control container-fluid form-control-default" type="text" class="form-control-file" name="price" id="exampleFormControlFile1"
@@ -178,11 +176,7 @@
             <select class="col-3 container-fluid form-control form-control-default" name="status_payment">
               <?php foreach ($status_order as $key => $value): ?> 
               <option 
-                <?php if ($order_detail['status'] == $value): ?>
-                    selected
-                  <?php endif; ?>
-                value="<?php echo $value; ?>">
-                <?php echo $key; ?>
+                <?php if ($order_detail['status'] == $value): ?>selected <?php endif; ?> value="<?php echo $value; ?>"><?php echo $key; ?>
               </option>
               <?php endforeach; ?>
             </select>
