@@ -6,7 +6,7 @@ session_start();
  	$info_web = executeQuery($sql,false);
  	$sql = "SELECT * FROM categories";
  	$Get_categories = executeQuery($sql,true);
- 	$sql = "SELECT * FROM products";
+ 	$sql = "SELECT * FROM products ORDER BY created_at DESC";
  	$All_pros = executeQuery($sql,true);
 ?>
 <!DOCTYPE html>

@@ -22,17 +22,18 @@
          elseif ($user['email']==null || $user['email']=='') {
            $errEmail="Email không tồn tại";
          }
-         // elseif ($user['trangthai']==2) {
-         //     $err0="Đăng Nhập Thất Bại, Tài Khoản Của Bạn Chưa Được Kích Hoạt";
+         elseif ($user['status'] == -1) {
+             $errPassword="Đăng Nhập Thất Bại, Tài Khoản Của Bạn Đã Bị Khóa";
+         }
           
-        else{
+         else{
           if (password_verify($password,$user['password'])) {
          
             $_SESSION['login']=$user;
             header('location:'.Base_url);
             
 
-         }
+          }
           else{
             $errPassword="Bạn nhập sai email hoặc password ";
          }

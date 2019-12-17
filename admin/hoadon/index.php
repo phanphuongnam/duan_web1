@@ -4,7 +4,7 @@
   if (!isset($_SESSION['login']) || $_SESSION['login']=='') {
     header('location:'.Base_url);
   }
-  $sql = "SELECT *,DATE_FORMAT(orders.created_at,'%d/%m/%Y') AS day_buy FROM orders";
+  $sql = "SELECT *,DATE_FORMAT(orders.created_at,'%d/%m/%Y') AS day_buy FROM orders order by day_buy desc";
   $orders =executeQuery($sql,true);
   
 

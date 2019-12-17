@@ -4,7 +4,8 @@
   if (!isset($_SESSION['login']) || $_SESSION['login']=='') {
     header('location:'.Base_url);
   }
-  $sql = "SELECT *,comments.id as cmtid,DATE_FORMAT(comments.created_at,'%d/%m/%Y') AS day_cmt FROM comments JOIN users on comments.user_id=users.id";
+  $sql = "SELECT *,comments.id as cmtid,products.id as pro_id,DATE_FORMAT(comments.created_at,'%d/%m/%Y') AS day_cmt FROM comments JOIN users on comments.user_id=users.id join products on
+    comments.product_id = products.id order by day_cmt desc";
   $comments =executeQuery($sql,true);
   
 
@@ -137,6 +138,7 @@
               <th scope="col">Email</th> 
               <th scope="col">Avatar</th>
               <th scope="col">Nội Dung</th>
+              <th scope="col">Sản Phẩm</th>
               <th scope="col">Ngày Bình Luận</th>
               <th scope="col">Hành Động</th>
           </tr>
@@ -151,6 +153,11 @@
               <img height="60px" src="<?php echo Base_url.$cmts['avatar'] ?>">
             </td>
             <td><?php echo $cmts['content'] ?></td>
+            <td>
+              <img width="70px" src="<?php echo Base_url.$cmts['image'] ?>">
+              <br>
+              <a target="_blank" href="<?php echo Base_url.'detail.php?id='.$cmts['pro_id'] ?>">Xem Chi Tiết</a> 
+            </td>
             <td><?php echo $cmts['day_cmt'] ?></td>
             <td class="col-lg-2"> 
                 <a 

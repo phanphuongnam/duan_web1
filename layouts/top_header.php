@@ -20,25 +20,48 @@
 						<?php if(isset($_SESSION['login'])): ?>
 						<li style="width: 280px;" class="nav-item dropdown text-white mr-lg-2 mb-lg-0 mb-2">
 							<a class="nav-link dropdown-toggle text-white" href="#" role="button" data-toggle="dropdown">
-								Chao: <?php echo $_SESSION['login']['name'] ?>
+								Chào: <?php echo $_SESSION['login']['name'] ?>
 							</a>
 							<div class="dropdown-menu">
+								<?php if($_SESSION['login']['role']==2): ?>
 								<a class="dropdown-item" href="<?php echo Base_url ?>admin">
-									Quan Li
+									Quản Lý
 
 								</a>
 								<a class="dropdown-item" href="#">
-									Lich Su Giao Dich
+									Lịch Sử Giao Dịch
+
+								</a>
+								<a class="dropdown-item" href="">
+									Thông Tin Cá Nhân
+
+								</a>
+								<a class="dropdown-item" href="#">
+									Đổi Mật Khẩu
 
 								</a>
 								<a class="dropdown-item" href="<?php echo Base_url ?>logout.php">
-									Dang Xuat
+									Đăng Xuất
+
+								</a>
+								<?php else: ?>
+									<a class="dropdown-item" href="#">
+									Lịch Sử Giao Dịch
+
+								</a>
+								<a class="dropdown-item" href="">
+									Thông Tin Cá Nhân
 
 								</a>
 								<a class="dropdown-item" href="#">
-									Thong Tin Ca Nhan
+									Đổi Mật Khẩu
 
 								</a>
+								<a class="dropdown-item" href="<?php echo Base_url ?>logout.php">
+									Đăng Xuất
+
+								</a>
+								<?php endif; ?>
 
 							</div>
 						</li>

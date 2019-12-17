@@ -20,6 +20,16 @@
   $totalUsers=executeQuery($sql);
   $sql = "SELECT *,(SELECT COUNT(*) FROM products WHERE products.cate_id=categories.id) as total_product FROM categories";
   $cate = executeQuery($sql,true);
+  $id_u= isset($_SESSION['login']) ? $_SESSION['login']['id'] : '';
+  $sql = "SELECT * FROM users where id = $id_u";
+  $checkU = executeQuery($sql,false);
+  if($checkU['role']!=2){
+    echo "<script>
+    alert('Bạn ko có quyền truy cập');
+      window.location.href='http://localhost/duan_web1/';
+    </script>";
+
+  }
 
 	
 

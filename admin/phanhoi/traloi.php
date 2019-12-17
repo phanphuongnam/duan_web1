@@ -15,6 +15,7 @@
   $detail_contact=executeQuery($sql,false);
   if(isset($_POST['submit'])){
     $content =$_POST['mota'];
+    $status = $_POST['status'];
       if (empty($content)) {
         $errDesc= "Bạn chưa nhập nội dung";
        
@@ -44,7 +45,8 @@
             $mail->Body =$content;
             $mail->send();
             $thanhcong= "Phản hồi thành công";
-            // unset($_SESSION['CART']);
+            $sql="update contacts set status='$status' where id=$id";
+            executeQuery($sql);
           }catch (Exception $e) {
             echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         }
@@ -177,6 +179,7 @@
       <span class="text-primary"><?php if(isset($thanhcong)) echo $thanhcong; ?></span>
       <form style="margin-bottom: 20px;font-family: time new roman"  action="" method="post" enctype="multipart/form-data" class="container-fluid">
           <div class="rows col-lg-6 form-group">
+            <input type="hidden" name="status" value="1">
             <br>
             <label>Email</label>
             <input class="col-3 form-control container-fluid form-control-default" type="text" name="link" readonly id="exampleFormControlFile1" value="<?php echo $detail_contact['email'] ?>">

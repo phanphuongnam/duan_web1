@@ -235,6 +235,7 @@ input[type="submit"] {
     position: absolute;
     left: -40%;
     top: -23px;
+    width: 120px;
 }
 
 .logo_agile {
@@ -367,7 +368,7 @@ ul.multi-column-dropdown li a:hover {
 }
 
 .w3l-space-banner {
-    padding-top: 9em;
+    padding-top: 15em;
 }
 
 .carousel-caption {

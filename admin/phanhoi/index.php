@@ -4,7 +4,7 @@
   if (!isset($_SESSION['login']) || $_SESSION['login']=='') {
     header('location:'.Base_url);
   }
-	$sql="select *,DATE_FORMAT(contacts.created_at,'%d/%m/%Y') AS day_ct from contacts";
+	$sql="select *,DATE_FORMAT(contacts.created_at,'%d/%m/%Y') AS day_ct from contacts order by day_ct desc";
   $show_contact = executeQuery($sql,true);
 
 
@@ -138,6 +138,7 @@
               <th scope="col">Email</th> 
               <th scope="col">Nội Dung</th>
               <th scope="col">Ngày Phản Hồi</th>
+              <th scope="col">Trạng Thái</th>
               <th scope="col">Tùy Chọn</th>
               
           </tr>
@@ -150,6 +151,14 @@
             <td><?php echo $show_ct['email'] ?></td>
             <td><?php echo $show_ct['content'] ?></td>
             <td><?php echo $show_ct['day_ct'] ?></td>
+            <td>
+              <?php if($show_ct['status']==1): ?>
+                <p class="text text-success">Đã trả lời</p>
+              <?php else: ?>
+                <p class="text text-danger">Chưa trả lời</p>
+              <?php endif; ?>
+              
+            </td>
             <td class="col-lg-2">
                 <a href="traloi.php?id=<?php echo $show_ct['id'] ?>">
                   <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-reply"></i> Trả Lời </button>

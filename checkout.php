@@ -140,8 +140,12 @@
 				<span>G</span>iỏ Hàng
 			</h3>
 			<!-- //tittle heading -->
-			<div class="checkout-right">
-				<?php if($cart==null || $cart==''): ?>
+			<div class="checkout-right text-center">
+				<?php if(isset($_GET['success'])): ?>
+            		<span class="alert alert-success">
+            			<?php echo $_GET['success']; ?>			
+            		</span>
+				<?php elseif($cart==null || $cart==''): ?>
 				<h4 class="mb-sm-4 mb-3"><?php echo "Giỏ hàng chưa có sản phẩm!"; ?>
 				</h4>
 				<?php else: ?>
@@ -210,12 +214,6 @@
 					<?php if(isset($_GET['errAll'])): ?>	
                 		<span class="alert alert-danger">
                 			<?php echo $_GET['errAll']; ?>			
-                		</span>
-                		<br>
-                		<br>
-                	<?php elseif(isset($_GET['success'])): ?>
-                		<span class="alert alert-success">
-                			<?php echo $_GET['success']; ?>			
                 		</span>
                 		<br>
                 		<br>
