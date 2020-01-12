@@ -372,7 +372,7 @@
 	            <?php if($ShowCMT==null): ?>
 	            <?php else: ?>    
         	 	<?php foreach($ShowCMT as $cmt): ?>	
-	             <div style="margin-top:20px;background: #f8f8f8;float: left;" class="border col-lg-8">
+	             <div style="margin-top:20px;background: #f8f8f8;float: left;margin-bottom: 10px;" class="border col-lg-8">
 	             	<div style="float: left;" class="col-sm-2 col-md-2">
 	             		<img class="" src="<?php echo Base_url.$cmt['avatar'] ?>">
 	             	</div>
@@ -382,7 +382,31 @@
 	               <p> <?php echo "Nội Dung:" .$cmt['content'] ?></p>
 	               <p><?php echo "Ngày Bình Luận: ".$cmt['n'] ?></p>
 	               </div>
-	             </div>	
+	               <div id="reply" class="btn button">Reply</div>
+	               <div id="cancel_repy" class="btn button"></div>
+	               <script type="text/javascript">
+	               		$(document).ready(function(){
+	               			$('#reply').click(function(){
+	               				$('#show_rl').show();	               				
+	               				$('#cancel_repy').html("Cancel").css('color','red').show();
+	               			});
+	               			$('#cancel_repy').click(function(){
+	               				$('#show_rl').hide();
+	               				$('#hd001').val('');
+	               				$('#cancel_repy').hide();
+	               			});
+	               		});
+	               </script>
+
+	             </div>
+	             <form id="show_rl" style="display: none;margin-top: 20px;margin-left: 50px;" action="<?php echo Base_url.'submit_cmt.php' ?>" method="post">
+	                <input type="hidden" name="pr_id" 
+	                  value="<?php echo $id;?>">
+	                <input id="hd001" style="height: 120px;font-size: 17px;" class="form-control col-lg-8" type="text" name="content" placeholder="Nhập nội dung để bình luận">
+	                <br>
+	                <input class="container col-lg-2 btn btn-primary" name="btn_submit" type="submit" value="Gửi">
+	            </form>
+
           		<?php endforeach ?>
 	         	<?php endif; ?>
 	         	<?php endif; ?>       

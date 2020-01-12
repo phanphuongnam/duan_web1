@@ -221,6 +221,7 @@
 						dataType: "json",
 						success: function(response){
 							var cart = response.data;
+							console.log(cart);
 							var totalItem = 0;
 							cart.forEach(function(value, index){
 								totalItem += value.quantity;
